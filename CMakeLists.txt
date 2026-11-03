@@ -24,3 +24,19 @@ if(WIN32)
     # Prevents opening a console window on Windows release builds
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
+
+if(WIN32)
+    add_custom_command(
+        TARGET WendysBasement POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_RUNTIME_DLLS:WendysBasement>
+            $<TARGET_FILE_DIR:WendysBasement>
+        COMMAND_EXPAND_LISTS
+    )
+endif()
+
+if(MSVC)
+    set_target_properties(WendysBasement PROPERTIES
+        LINK_FLAGS "/SUBSYSTEM:CONSOLE"
+    )
+endif()

@@ -37,13 +37,13 @@ struct GameState {
 
 
 void initGame(GameState& state) {
-	state.window = sf::RenderWindow(sf::VideoMode({1920, 1080}), "Wendy's Basement");
+	state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
 	state.window.setFramerateLimit(120);
 	state.is_running = true;
 
 	state.player.shape = sf::CircleShape(10);
 	state.player.pos = {200, 200};
-	state.player.speed = 500;
+	state.player.speed = 10000;
 	state.player.shape.setPosition(state.player.pos);
 	
 	state.view.setSize({1920, 1080});
