@@ -43,7 +43,7 @@ void initGame(GameState& state) {
 
 	state.player.shape = sf::CircleShape(10);
 	state.player.pos = {200, 200};
-	state.player.speed = 10000;
+	state.player.speed = 500;
 	state.player.shape.setPosition(state.player.pos);
 	
 	state.view.setSize({1920, 1080});
