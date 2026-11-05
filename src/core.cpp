@@ -1,6 +1,8 @@
 #include "../include/definitions.hpp"
-#include <SFML/Graphics/RectangleShape.hpp>
+#include "../include/mechanics.hpp"
 #include "../include/core.hpp"
+
+#include <SFML/Graphics/RectangleShape.hpp>
 
 
 void initGame(GameState& state) {
@@ -41,24 +43,16 @@ void handleEvents(GameState& state) {
 
 
 void updateGame(GameState& state) {
+
+    /*
+    dt here means 'delta time'
+    it calculates the seconds between two frames
+    we use this so that calculations are done with respect to seconds and not with respect to frames
+    */
+
     state.dt = state.clock.restart().asSeconds();
 
-	sf::Vector2f direction{0.0f, 0.0f};
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) direction.y -= 1.0f;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) direction.x -= 1.0f;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) direction.y += 1.0f;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) direction.x += 1.0f;
-
-	if (direction.x && direction.y) {
-		direction.x /= std::sqrt(2);
-		direction.y /= std::sqrt(2);
-	}
-
-	state.player.position += direction * state.player.speed * state.dt;
-	state.player.shape.setPosition(state.player.position);
-	state.player.shape.setFillColor(sf::Color::Red);
-	state.camera.setCenter(state.player.position);
+	updatePlayerPosition(state);	
 }
 
 
@@ -81,6 +75,8 @@ void renderGame(GameState& state) {
 			state.window.draw(shape);
 		}
 	}
+    state.player.shape.setPosition(state.player.position);
+	state.player.shape.setFillColor(sf::Color::Red);
 	state.window.draw(state.player.shape);
 	state.window.display();
 }
