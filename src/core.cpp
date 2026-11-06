@@ -10,10 +10,9 @@ void initGame(GameState& state) {
 	state.window.setFramerateLimit(120);
 	state.is_running = true;
 
-	state.player.shape = sf::CircleShape(10);
-	state.player.position = {200, 200};
+	state.player.shape = sf::CircleShape(14);
 	state.player.speed = 500;
-	state.player.shape.setPosition(state.player.position);
+	state.player.position = {200, 200};
 	
 	state.camera.setSize({1920, 1080});
 
@@ -59,6 +58,7 @@ void updateGame(GameState& state) {
 void renderGame(GameState& state) {
     state.window.clear();
 	state.window.setView(state.camera);
+    state.camera.setCenter(state.player.position);
 
 	for (int i = 0; i < MAP_HEIGHT; i++) {
 		for (int j = 0; j < MAP_WIDTH; j++) {
@@ -75,7 +75,7 @@ void renderGame(GameState& state) {
 			state.window.draw(shape);
 		}
 	}
-    state.player.shape.setPosition(state.player.position);
+	state.player.shape.setPosition(state.player.position);
 	state.player.shape.setFillColor(sf::Color::Red);
 	state.window.draw(state.player.shape);
 	state.window.display();
