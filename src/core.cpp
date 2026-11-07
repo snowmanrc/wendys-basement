@@ -10,8 +10,9 @@ void initGame(GameState& state) {
 	state.window.setFramerateLimit(120);
 	state.is_running = true;
 
-	state.player.shape = sf::CircleShape(14);
+	state.player.shape = sf::CircleShape(PLAYER_RADIUS);
 	state.player.speed = 500;
+	state.player.size = PLAYER_RADIUS;
 	state.player.position = {200, 200};
 	
 	state.camera.setSize({1920, 1080});
