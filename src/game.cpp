@@ -2,9 +2,9 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-#include "game.hpp"
-#include "map.hpp"
-#include "player.hpp"
+#include "include/game.hpp"
+#include "include/map.hpp"
+#include "include/player.hpp"
 
 
 void Game::init(Game::State& state) {
@@ -12,7 +12,8 @@ void Game::init(Game::State& state) {
     state.running = true;
 
     state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
-	state.window.setFramerateLimit(60);
+	state.window.setFramerateLimit(120);
+    state.camera.setSize({720, 600});
 
     state.player = {
         .shape = sf::CircleShape(16),

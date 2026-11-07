@@ -2,8 +2,8 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#include "map.hpp"
-#include "player.hpp"
+#include "include/map.hpp"
+#include "include/player.hpp"
 
 
 void Player::updatePosition(Entity &player, float dt) {
