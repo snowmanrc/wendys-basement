@@ -8,7 +8,7 @@ namespace Map {
     const int height = 100;
     const float tilesize = 40;
 
-    static int grid[width][height] = {};
+    extern int grid[width][height];
 
     void load(std::string filepath);
 }
