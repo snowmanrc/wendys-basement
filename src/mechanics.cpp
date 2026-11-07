@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../include/mechanics.hpp"
 
+
 void updatePlayerPosition(GameState& state) {
 
     sf::Vector2f direction{0,0};
@@ -10,6 +11,15 @@ void updatePlayerPosition(GameState& state) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) direction.x -= 1;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) direction.y += 1;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) direction.x += 1;
+
+	if (
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || 
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)
+	) {
+		state.player.speed = PLAYER_RUNNING_SPEED;
+	} else {
+		state.player.speed = PLAYER_WALKING_SPEED;
+	}
 
     /* 
     because both have magnitude, the movement will be along the hypotenuse right?
@@ -35,6 +45,7 @@ void updatePlayerPosition(GameState& state) {
 	}
 
 	std::cout << "player collided: " << hasPlayerCollided(state) << '\n';
+
 }
 
 bool hasPlayerCollided(GameState& state) {
@@ -50,9 +61,9 @@ bool hasPlayerCollided(GameState& state) {
 			
 			if (tile == 0) continue;
 
-			float x = j * TILE_SIZE;
-			float y = i * TILE_SIZE;
-			int w = TILE_SIZE, h = TILE_SIZE;
+			float x = j * MAP_TILE_SIZE;
+			float y = i * MAP_TILE_SIZE;
+			int w = MAP_TILE_SIZE, h = MAP_TILE_SIZE;
 			
 			// collision detection
 

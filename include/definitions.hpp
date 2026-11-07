@@ -6,9 +6,11 @@
 
 static const int MAP_WIDTH = 100;
 static const int MAP_HEIGHT = 100;
-static const float TILE_SIZE = 40;
+static const float MAP_TILE_SIZE = 40;
 
 static const float PLAYER_RADIUS = 12;
+static const float PLAYER_WALKING_SPEED = 400;
+static const float PLAYER_RUNNING_SPEED = 900;
 
 struct Map {
     int grid[MAP_WIDTH][MAP_HEIGHT];

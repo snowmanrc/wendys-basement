@@ -68,10 +68,10 @@ void renderGame(GameState& state) {
 			
 			if (tile == 0) continue;
 
-			float x = j * TILE_SIZE;
-			float y = i * TILE_SIZE;
+			float x = j * MAP_TILE_SIZE;
+			float y = i * MAP_TILE_SIZE;
 
-			auto shape = sf::RectangleShape({TILE_SIZE, TILE_SIZE});
+			auto shape = sf::RectangleShape({MAP_TILE_SIZE, MAP_TILE_SIZE});
 			shape.setPosition({x, y});
 			state.window.draw(shape);
 		}
