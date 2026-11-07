@@ -1,9 +1,12 @@
-#include "../include/definitions.hpp"
 #include <iostream>
-#include "../include/mechanics.hpp"
+
+#include <SFML/Window/Keyboard.hpp>
+
+#include "map.hpp"
+#include "player.hpp"
 
 
-void updatePlayerPosition(GameState& state) {
+void Player::updatePosition(Entity &player, float dt) {
 
     sf::Vector2f direction{0,0};
 
@@ -16,9 +19,9 @@ void updatePlayerPosition(GameState& state) {
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || 
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)
 	) {
-		state.player.speed = PLAYER_RUNNING_SPEED;
+		player.speed = Player::running_speed;
 	} else {
-		state.player.speed = PLAYER_WALKING_SPEED;
+		player.speed = Player::walking_speed;
 	}
 
     /* 
@@ -32,38 +35,36 @@ void updatePlayerPosition(GameState& state) {
 		direction.y /= 1.414;
 	}
 
-	auto old_pos = state.player.position;
+	auto old_pos = player.position;
 
-	state.player.position.x += direction.x * state.player.speed * state.dt;
-	if (hasPlayerCollided(state)) {
-		state.player.position.x = old_pos.x;
+	player.position.x += direction.x * player.speed * dt;
+	if (Player::hasCollided(player)) {
+		player.position.x = old_pos.x;
 	}
 
-	state.player.position.y += direction.y * state.player.speed * state.dt;
-	if (hasPlayerCollided(state)) {
-		state.player.position.y = old_pos.y;
+	player.position.y += direction.y * player.speed * dt;
+	if (Player::hasCollided(player)) {
+		player.position.y = old_pos.y;
 	}
-
-	std::cout << "player collided: " << hasPlayerCollided(state) << '\n';
-
 }
 
-bool hasPlayerCollided(GameState& state) {
 
-	float r = state.player.shape.getRadius();
-	float px = state.player.position.x + r;
-	float py = state.player.position.y + r;
+bool Player::hasCollided(Entity& player) {
 
-	for (int i = 0; i < MAP_HEIGHT; i++) {
-		for (int j = 0; j < MAP_WIDTH; j++) {
+	float r = player.shape.getRadius();
+	float px = player.position.x + r;
+	float py = player.position.y + r;
 
-			auto tile = state.map.grid[i][j];
+	for (int i = 0; i < Map::height; i++) {
+		for (int j = 0; j < Map::width; j++) {
+
+			auto tile = Map::grid[i][j];
 			
 			if (tile == 0) continue;
 
-			float x = j * MAP_TILE_SIZE;
-			float y = i * MAP_TILE_SIZE;
-			int w = MAP_TILE_SIZE, h = MAP_TILE_SIZE;
+			float x = j * Map::tilesize;
+			float y = i * Map::tilesize;
+			int w = Map::tilesize, h = Map::tilesize;
 			
 			// collision detection
 
