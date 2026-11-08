@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include "include/game.hpp"
+#include "include/ghost.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
 
@@ -23,6 +24,21 @@ namespace Game {
             .position = {200, 200},
             .size = 16,
             .speed = Player::walking_speed
+        };
+
+        state.ghost = {
+            .shape = sf::CircleShape(16),
+            .position = {200, 200},
+            .size = 16,
+            .speed = 600,
+        };
+
+        state.ghost.path = {
+            {2, 4},
+            {-2, 4},
+            {2, -4},
+            {-2, 4},
+            {-2, -4},
         };
         
         Map::load("");
@@ -48,6 +64,7 @@ namespace Game {
         state.dt = state.clock.restart().asSeconds();
 
         Player::updatePosition(state.player, state.dt);
+        Ghost::updatePosition(state.ghost, state.dt);
     }
 
 
@@ -75,6 +92,10 @@ namespace Game {
         state.player.shape.setPosition(state.player.position);
         state.player.shape.setFillColor(sf::Color::Red);
         state.window.draw(state.player.shape);
+
+        state.ghost.shape.setPosition(state.ghost.position);
+        state.ghost.shape.setFillColor(sf::Color::Magenta);
+        state.window.draw(state.ghost.shape);
 
         state.window.display();
     }

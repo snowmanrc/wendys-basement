@@ -5,6 +5,7 @@
 #include <SFML/System/Clock.hpp>
 
 #include "player.hpp"
+#include "ghost.hpp"
 
 namespace Game {
 
@@ -15,6 +16,7 @@ namespace Game {
         bool running;
         float dt;
         Player::Entity player;
+        Ghost::Entity  ghost;
     };
 
     void init(State& state);
