@@ -65,8 +65,8 @@ namespace Ghost {
     
         int lower_limit_x = std::max(0, tile.x - 1);
         int lower_limit_y = std::max(0, tile.y - 1);
-        int upper_limit_x = std::min(Map::width, tile.x + 1);
-        int upper_limit_y = std::min(Map::height, tile.y + 1);
+        int upper_limit_x = std::min(Map::width - 1, tile.x + 1);
+        int upper_limit_y = std::min(Map::height - 1, tile.y + 1);
         
         int count = 0;
         

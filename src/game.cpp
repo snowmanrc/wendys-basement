@@ -21,14 +21,14 @@ namespace Game {
 
         state.player = {
             .shape = sf::CircleShape(16),
-            .position = {200, 0},
+            .position = {200, 100},
             .size = 16,
             .speed = Player::walking_speed
         };
 
         state.ghost = {
             .shape = sf::CircleShape(16),
-            .position = {1, 1},
+            .position = {10, 400},
             .size = 16,
             .speed = 500,
         };
