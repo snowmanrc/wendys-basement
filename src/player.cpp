@@ -2,6 +2,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
+#include "include/debug.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
 
@@ -26,6 +27,10 @@ namespace Player {
 			player.speed = Player::walking_speed;
 		}
 
+		// early return so we don't have to do any computation when the player is not moving
+		if (direction.x == 0 && direction.y == 0) return;
+
+
 		/* 
 		because both have magnitude, the movement will be along the hypotenuse right?
 		so the speed would be boosted by a factor of sqrt(2) = 1.414
@@ -49,7 +54,13 @@ namespace Player {
 			player.position.y = old_pos.y;
 		}
 
-		std::cout << player.position.x << " " << player.position.y << '\n';
+		DEBUG(
+			"Player Position: Coordinate(%f, %f) Tiled(%i, %i)", 
+			player.position.x, 
+			player.position.y,
+			(int)(player.position.x / Map::tilesize),
+			(int)(player.position.y / Map::tilesize)
+		);
 	}
 
 
