@@ -21,27 +21,24 @@ namespace Game {
 
         state.player = {
             .shape = sf::CircleShape(16),
-            .position = {200, 200},
+            .position = {200, 0},
             .size = 16,
             .speed = Player::walking_speed
         };
 
         state.ghost = {
             .shape = sf::CircleShape(16),
-            .position = {200, 200},
+            .position = {1, 1},
             .size = 16,
-            .speed = 600,
+            .speed = 500,
         };
 
-        state.ghost.path = {
-            {2, 4},
-            {-2, 4},
-            {2, -4},
-            {-2, 4},
-            {-2, -4},
-        };
-        
         Map::load("");
+        sf::Vector2i player_tile = {
+            static_cast<int>(state.player.position.x / Map::tilesize), 
+            static_cast<int>(state.player.position.y / Map::tilesize)
+        };
+        Ghost::follow(state.ghost, player_tile); 
     }
 
 
@@ -63,8 +60,25 @@ namespace Game {
     void update(State& state) {
         state.dt = state.clock.restart().asSeconds();
 
-        Player::updatePosition(state.player, state.dt);
+        Player::updatePosition(state.player, state.dt);       
         Ghost::updatePosition(state.ghost, state.dt);
+
+
+        static sf::Clock pathfindingClock;
+        sf::Time pathfindingInterval = sf::seconds(0.5f); // Run every 0.5 seconds
+
+        // Inside your main game loop:
+        sf::Time elapsed = pathfindingClock.getElapsedTime();
+
+        if (elapsed >= pathfindingInterval) {
+            sf::Vector2i player_tile = {
+                static_cast<int>(state.player.position.x / Map::tilesize), 
+                static_cast<int>(state.player.position.y / Map::tilesize)
+            };
+            Ghost::follow(state.ghost, player_tile); 
+            // Reset the clock for the next interval
+            pathfindingClock.restart();
+        }
     }
 
 
@@ -116,6 +130,7 @@ namespace Game {
         State state;
         init(state);
 
+        
         while (state.running) {
             handleEvents(state);
             update(state);
