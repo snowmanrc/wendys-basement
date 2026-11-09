@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Default build type to Debug if not specified
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 # Default SFML path for Windows installations in C:\ 
@@ -25,7 +25,6 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Compiler-specific debug flags and AddressSanitizer configuration
 target_compile_options(${PROJECT_NAME} PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:/Zi /Od /W4 /RTC1>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-g -O0 -Wall -Wextra -fsanitize=address,undefined>
 )
 
