@@ -102,11 +102,12 @@ namespace Ghost {
 		return false;
     }
 
+
     void follow(Entity& ghost, sf::Vector2i target_tile) {
 
         sf::Vector2i ghost_tile = Utils::cartesianToTiledVector(ghost.position, Map::tilesize);
         ghost.path = Ghost::findPath(ghost_tile, target_tile);
-        
+
     }
     
 
@@ -143,7 +144,7 @@ namespace Ghost {
         return (14 - 10) * std::min(dx, dy) + 10 * std::max(dx, dy); 
     }
 
-
+    
     // data structure needed for A*
     struct Node {
         sf::Vector2i pos;
@@ -185,6 +186,10 @@ namespace Ghost {
         std::vector<std::byte> nodeset(Map::height * Map::width); // tracks whether a node is in closed(2), open(1) or none(0)
         std::vector<int> fvalueset(Map::height * Map::width); // tracks the f value of each node
         std::vector<sf::Vector2i> pathtrackset(Map::height * Map::width); // tracks the parent node of each node
+
+        // optimization: i am using flat 1d vectors here instead of 2d arrays because
+        // - vectors allocate on heap so the stack remains small (i encountered stack smashing when i used 2D arrays with large Map::grid)
+        // - 1D vectors offer better cache locality as compared to 2D VECTORS
 
         // pushes the starting node to the open set
         openheap.push((Node) {start, &access(fvalueset, start.y, start.x)});
@@ -252,4 +257,6 @@ namespace Ghost {
         
         return path;
     }
+
+    #undef access
 }
