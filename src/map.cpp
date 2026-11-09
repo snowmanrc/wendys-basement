@@ -1,4 +1,5 @@
 #include "include/map.hpp"
+#include "include/debug.hpp"
 #include <iostream>
 #include<SFML/Graphics/Image.hpp>
 
@@ -32,7 +33,7 @@ namespace Map {
                 else if (pixel == sf::Color::Black)
                 {
                     grid[i][j] = 1;
-                   
+                    DEBUG("%i %i", i, j);
 				}
 				
                

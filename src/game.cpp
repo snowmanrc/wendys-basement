@@ -36,7 +36,7 @@ namespace Game {
             .speed = 500,
         };
 
-        Map::load("../../../src/assets/map.png");
+        Map::load("assets/map.png");
 
         sf::Vector2i player_tile = Utils::cartesianToTiledVector(state.player.position, Map::tilesize);
         Ghost::follow(state.ghost, player_tile); 
