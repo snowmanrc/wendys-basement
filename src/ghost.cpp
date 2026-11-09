@@ -6,6 +6,7 @@
 #include "include/ghost.hpp"
 #include "include/debug.hpp"
 #include "include/map.hpp"
+#include "include/utils.hpp"
 
 
 namespace Ghost {
@@ -17,8 +18,8 @@ namespace Ghost {
 
         auto target_tile = ghost.path.back();
         sf::Vector2i ghost_tile = {
-            static_cast<int>((ghost.position.x + ghost.size) / Map::tilesize), 
-            static_cast<int>((ghost.position.y + ghost.size) / Map::tilesize)
+            static_cast<int>((ghost.position.x) / Map::tilesize), 
+            static_cast<int>((ghost.position.y) / Map::tilesize)
         };
 
         if (target_tile == ghost_tile) {
@@ -30,10 +31,46 @@ namespace Ghost {
         sf::Vector2f dir_vecf = {(float)dir_vec.x, (float)dir_vec.y}; 
         auto normalized_vec = dir_vecf.normalized();
 
-        ghost.position.x += normalized_vec.x * ghost.speed * dt; 
-        ghost.position.y += normalized_vec.y * ghost.speed * dt; 
+        auto old_pos = ghost.position;
+
+		ghost.position.x += normalized_vec.x * ghost.speed * dt;
+		if (hasCollided(ghost)) {
+			ghost.position.x = old_pos.x;
+		}
+
+		ghost.position.y += normalized_vec.y * ghost.speed * dt;
+		if (hasCollided(ghost)) {
+			ghost.position.y = old_pos.y;
+		}
     }
 
+
+    bool hasCollided(Entity& ghost) {
+        
+		float cr = ghost.shape.getRadius();
+		float cx = ghost.position.x + cr;
+		float cy = ghost.position.y + cr;
+
+		for (int i = 0; i < Map::height; i++) {
+			for (int j = 0; j < Map::width; j++) {
+
+				auto tile = Map::grid[i][j];
+				
+				if (tile == 0) continue;
+
+				float rx = j * Map::tilesize;
+				float ry = i * Map::tilesize;
+				int rw = Map::tilesize, rh = Map::tilesize;
+				
+				bool collided = Utils::detectCircleRectCollision(cr, cx, cy, rx, ry, rw, rh);
+				
+
+				if (collided) return true;
+			}
+		}
+
+		return false;
+    }
 
     void follow(Entity& ghost, sf::Vector2i target_tile) {
 
@@ -94,6 +131,13 @@ namespace Ghost {
 
     std::vector<sf::Vector2i> 
     findPath(sf::Vector2i start, sf::Vector2i end) {
+
+        /*
+        Finds a path from start to end in Map::grid. Uses A* algorithm to achieve this.
+        Reasons I used A*
+        - It finds shortest path first and its faster than djikstra
+        - It sounds cool
+        */
 
         if (start.x < 0 || start.x >= Map::width || start.y < 0 || start.y >= Map::height ||
             end.x < 0 || end.x >= Map::width || end.y < 0 || end.y >= Map::height) {
