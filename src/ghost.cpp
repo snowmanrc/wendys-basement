@@ -16,10 +16,6 @@ namespace Ghost {
 
 
     void updatePosition(Entity& ghost, float dt) {
-        
-        static sf::Clock stuck_clock;
-        static sf::Vector2i last_ghost_tile;
-        static sf::Vector2i last_target_tile;
 
         if (ghost.path.empty()) return;
 
@@ -62,8 +58,6 @@ namespace Ghost {
 		if (hasCollided(ghost)) {
 			ghost.position.y = old_pos.y;
 		}
-
-        last_ghost_tile = ghost_tile;
 
         DEBUG(
 			"Ghost Position: Coordinate(%f, %f) Tiled(%i, %i)", 

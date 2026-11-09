@@ -27,4 +27,21 @@ namespace Utils {
         static_cast<int>(v.y / scale)
         };
     }
+
+    static inline sf::Vector2f
+    tiledToCartesianVector(sf::Vector2i v, int scale) {
+        return {
+        (float) v.x * scale, 
+        (float) v.y * scale
+        };
+    }
+
+    static inline sf::Vector2f
+    tiledToCartesianVectorCentered(sf::Vector2i v, int scale) {
+        sf::Vector2f top_left = tiledToCartesianVector(v, scale);
+        return {
+            top_left.x + scale / 2.0f,
+            top_left.y + scale / 2.0f
+        };
+    }
 }

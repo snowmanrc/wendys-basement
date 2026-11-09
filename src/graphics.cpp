@@ -1,4 +1,5 @@
 
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -16,13 +17,19 @@ namespace Graphics {
 
                 auto tile = Map::grid[i][j];
                 
-                if (tile == 0) continue;
+                sf::Color color;
+
+                if (tile == 0) {
+                    continue;
+                } else {
+                    color = sf::Color(41, 59, 61, 255);
+                }
 
                 float x = j * Map::tilesize;
                 float y = i * Map::tilesize;
 
                 auto shape = sf::RectangleShape({Map::tilesize, Map::tilesize});
-                shape.setFillColor(sf::Color::Yellow);
+                shape.setFillColor(color);
                 shape.setPosition({x, y});
                 window.draw(shape);
             }
