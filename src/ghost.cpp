@@ -1,3 +1,5 @@
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cstddef>
 #include <functional>
@@ -15,6 +17,10 @@ namespace Ghost {
 
     void updatePosition(Entity& ghost, float dt) {
         
+        static sf::Clock stuck_clock;
+        static sf::Vector2i last_ghost_tile;
+        static sf::Vector2i last_target_tile;
+
         if (ghost.path.empty()) return;
 
         auto target_tile = ghost.path.back();
@@ -26,6 +32,23 @@ namespace Ghost {
         if (target_tile == ghost_tile) {
             ghost.path.pop_back();
             return;
+        }
+
+        
+        if (target_tile != last_target_tile || ghost_tile != last_ghost_tile) {
+            stuck_clock.restart();
+            last_target_tile = target_tile;
+            last_ghost_tile = ghost_tile;
+        }
+
+        if (stuck_clock.getElapsedTime() > sf::seconds(5)) {
+            ghost.position = {
+                target_tile.x * Map::tilesize,
+                target_tile.y * Map::tilesize
+            };
+            stuck_clock.restart();
+            ghost.path.pop_back();
+            DEBUG("teleported!");
         }
 
         auto dir_vec = target_tile - ghost_tile;
@@ -43,6 +66,16 @@ namespace Ghost {
 		if (hasCollided(ghost)) {
 			ghost.position.y = old_pos.y;
 		}
+
+        last_ghost_tile = ghost_tile;
+
+        DEBUG(
+			"Ghost Position: Coordinate(%f, %f) Tiled(%i, %i)", 
+			ghost.position.x, 
+			ghost.position.y,
+			(int)(ghost.position.x / Map::tilesize),
+			(int)(ghost.position.y / Map::tilesize)
+		);
     }
 
 
