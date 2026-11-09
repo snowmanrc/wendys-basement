@@ -24,22 +24,42 @@ namespace Game {
 
         state.player = {
             .shape = sf::CircleShape(16),
+<<<<<<< HEAD
+            .position = {1204, 884},
+=======
             .position = {200, 100},
+>>>>>>> 74d972a9d95bdb03272747b31f60bd93dd2e0a9c
             .size = 16,
             .speed = Player::walking_speed
         };
 
         state.ghost = {
             .shape = sf::CircleShape(16),
+<<<<<<< HEAD
+            .position = {1204, 884},
+=======
             .position = {10, 400},
+>>>>>>> 74d972a9d95bdb03272747b31f60bd93dd2e0a9c
             .size = 16,
             .speed = 500,
         };
 
+<<<<<<< HEAD
+        state.ghost.path = {
+            {2, 4},
+            {-2, 4},
+            {2, -4},
+            {-2, 4},
+            {-2, -4},
+        };
+        
+        Map::load("../../../src/assets/map.png");
+=======
         Map::load("");
 
         sf::Vector2i player_tile = Utils::cartesianToTiledVector(state.player.position, Map::tilesize);
         Ghost::follow(state.ghost, player_tile); 
+>>>>>>> 74d972a9d95bdb03272747b31f60bd93dd2e0a9c
     }
 
 
@@ -82,13 +102,41 @@ namespace Game {
 
     void render(State& state) {
         state.window.clear();
-        state.window.setView(state.camera);
         state.camera.setCenter(state.player.position);
+        state.window.setView(state.camera);
+        
 
+<<<<<<< HEAD
+        for (int i = 0; i < Map::height; i++) {
+            for (int j = 0; j < Map::width; j++) {
+
+                auto tile = Map::grid[i][j];
+               
+                if (tile == 0) continue;
+
+                float x = j * Map::tilesize;
+                float y = i * Map::tilesize;
+
+                auto shape = sf::RectangleShape({Map::tilesize, Map::tilesize});
+                shape.setFillColor(sf::Color::Yellow);
+                shape.setPosition({x, y});
+                state.window.draw(shape);
+            }
+        }
+        state.player.shape.setPosition(state.player.position);
+        state.player.shape.setFillColor(sf::Color::Red);
+        state.window.draw(state.player.shape);
+
+        state.ghost.shape.setPosition(state.ghost.position);
+        state.ghost.shape.setFillColor(sf::Color::Magenta);
+        state.window.draw(state.ghost.shape);
+=======
         Graphics::drawMap(state.window);
         Graphics::drawPlayer(state.window, state.player);
         Graphics::drawGhost(state.window, state.ghost);
+>>>>>>> 74d972a9d95bdb03272747b31f60bd93dd2e0a9c
 
+        
         state.window.display();
     }
 

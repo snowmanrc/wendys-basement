@@ -1,5 +1,6 @@
 #include "include/map.hpp"
 #include <iostream>
+#include<SFML/Graphics/Image.hpp>
 
 
 namespace Map {
@@ -8,15 +9,38 @@ namespace Map {
 
     void load(std::string filepath) {
 
-        for (int i = 0; i < Map::height; i++) {
-            for (int j = 0; j < Map::width; j++) {
-    
-                Map::grid[i][j] = std::rand() % 5 == 0 ? 1: 0;
+        sf::Image image;
+        
+
+        if (!image.loadFromFile(filepath))
+        {
+           std:: cout << "Image could not be loaded!" <<std:: endl;
+            return;
+        }
+
+		sf::Vector2u size = image.getSize();
+
+        for (int i = 0; i < size.y; i++) {
+            for (int j = 0; j < size.x; j++) {
+
+				sf::Color pixel = image.getPixel( { (unsigned int)j, (unsigned int )i});
+
+                if (pixel == sf::Color::White)
+                {
+                    grid[i][j] = 0;
+                }
+                else if (pixel == sf::Color::Black)
+                {
+                    grid[i][j] = 1;
+                   
+				}
+				
+               
             }
         }
-    
-        std::cout << "runs\n";
-    
+       
+		
+   
     }
     
 }
