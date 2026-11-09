@@ -127,7 +127,7 @@ namespace Ghost {
             for (int j = lower_limit_y; j <= upper_limit_y; j++) {
                 if (i == tile.x && j == tile.y) continue;  
                 if (Map::grid[j][i] != 0) continue;      
-                neighbours[count++] = {i, j};
+                neighbours[count++] = sf::Vector2i(i, j);
             }
         }
         
@@ -252,7 +252,7 @@ namespace Ghost {
         while (true) {
             path.push_back(current);
             current = access(pathtrackset, current.y, current.x);
-            if (current == start || current == (sf::Vector2i) {0,0}) break;
+            if (current == start || current == sf::Vector2i(0,0)) break;
         }
         
         return path;
