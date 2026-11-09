@@ -27,22 +27,6 @@ namespace Ghost {
             return;
         }
         
-        if (target_tile != last_target_tile || ghost_tile != last_ghost_tile) {
-            stuck_clock.restart();
-            last_target_tile = target_tile;
-            last_ghost_tile = ghost_tile;
-        }
-
-        if (stuck_clock.getElapsedTime() > sf::seconds(5)) {
-            ghost.position = {
-                target_tile.x * Map::tilesize,
-                target_tile.y * Map::tilesize
-            };
-            stuck_clock.restart();
-            ghost.path.pop_back();
-            DEBUG("teleported!");
-        }
-
         auto dir_vec = target_tile - ghost_tile;
         sf::Vector2f dir_vecf = {(float)dir_vec.x, (float)dir_vec.y}; 
         auto normalized_vec = dir_vecf.normalized();
