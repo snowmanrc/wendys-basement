@@ -12,17 +12,16 @@ namespace Map {
 
         sf::Image image;
         
-
         if (!image.loadFromFile(filepath))
         {
-           std:: cout << "Image could not be loaded!" <<std:: endl;
+            DEBUG("Image could not be loaded!");
             return;
         }
 
 		sf::Vector2u size = image.getSize();
 
-        for (int i = 0; i < size.y; i++) {
-            for (int j = 0; j < size.x; j++) {
+        for (unsigned int i = 0; i < size.y; i++) {
+            for (unsigned int j = 0; j < size.x; j++) {
 
 				sf::Color pixel = image.getPixel( { (unsigned int)j, (unsigned int )i});
 
@@ -33,15 +32,8 @@ namespace Map {
                 else if (pixel == sf::Color::Black)
                 {
                     grid[i][j] = 1;
-                    DEBUG("%i %i", i, j);
 				}
-				
-               
             }
-        }
-       
-		
-   
+        }   
     }
-    
 }
