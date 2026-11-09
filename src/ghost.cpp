@@ -144,11 +144,13 @@ namespace Ghost {
         return (14 - 10) * std::min(dx, dy) + 10 * std::max(dx, dy); 
     }
 
-    
+
     // data structure needed for A*
     struct Node {
         sf::Vector2i pos;
         int* f_value;
+
+        Node(sf::Vector2i _pos, int* _f): pos(_pos), f_value(_f) {};
 
         bool operator>(const Node& other) const {
             return *this->f_value > *other.f_value;
@@ -192,7 +194,7 @@ namespace Ghost {
         // - 1D vectors offer better cache locality as compared to 2D VECTORS
 
         // pushes the starting node to the open set
-        openheap.push((Node) {start, &access(fvalueset, start.y, start.x)});
+        openheap.push(Node(start, &access(fvalueset, start.y, start.x)));
         access(nodeset, start.y, start.x) = std::byte(1);
 
         // main loop, runs till there are nodes to examine
@@ -239,7 +241,7 @@ namespace Ghost {
                     access(pathtrackset, y, x) = current.pos;
 
                     access(nodeset, y, x) = std::byte(1);
-                    openheap.push({.pos = neighbour, .f_value = &access(fvalueset, y, x)});
+                    openheap.push(Node(neighbour, &access(fvalueset, y, x)));
                 }
             }
         }
