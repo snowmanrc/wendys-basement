@@ -1,4 +1,5 @@
 #include <SFML/System/Vector2.hpp>
+#include <cstddef>
 #include <functional>
 #include <queue>
 #include <vector>
@@ -83,23 +84,11 @@ namespace Ghost {
     }
     
 
-    struct Node {
-        sf::Vector2i pos;
-        int* f_value;
-
-        bool operator>(const Node& other) const {
-            return *this->f_value > *other.f_value;
-        }
-    };
-
-
-    using NodeHeap = std::priority_queue<Node, std::vector<Node>, std::greater<Node>>;
-
-
     static inline int
-
     findTileNeighbours(sf::Vector2i tile, sf::Vector2i neighbours[]) {
     
+        // find the 8 cardinal and valid neighbours of a tile
+
         int lower_limit_x = std::max(0, tile.x - 1);
         int lower_limit_y = std::max(0, tile.y - 1);
         int upper_limit_x = std::min(Map::width - 1, tile.x + 1);
@@ -129,6 +118,21 @@ namespace Ghost {
     }
 
 
+    // data structure needed for A*
+    struct Node {
+        sf::Vector2i pos;
+        int* f_value;
+
+        bool operator>(const Node& other) const {
+            return *this->f_value > *other.f_value;
+        }
+    };
+
+    using NodeHeap = std::priority_queue<Node, std::vector<Node>, std::greater<Node>>;
+
+    // helper macro to treat the 1D vector as 2D matrix
+    #define access(obj, a, b) obj[a * Map::height + b]
+
     std::vector<sf::Vector2i> 
     findPath(sf::Vector2i start, sf::Vector2i end) {
 
@@ -139,62 +143,84 @@ namespace Ghost {
         - It sounds cool
         */
 
-        if (start.x < 0 || start.x >= Map::width || start.y < 0 || start.y >= Map::height ||
-            end.x < 0 || end.x >= Map::width || end.y < 0 || end.y >= Map::height) {
-            return {}; // Out of bounds, abort pathfinding
+        if (
+            start.x < 0 || start.x >= Map::width || start.y < 0 || start.y >= Map::height 
+            ||
+            end.x < 0 || end.x >= Map::width || end.y < 0 || end.y >= Map::height
+        ) {
+            return {}; // out of bounds, abort pathfinding
         }
 
-        if (start == end) return {};
+        if (start == end) return {}; // to not run the pathfinding algo when start == end
 
-        NodeHeap openheap;
-        std::byte nodeset[Map::height][Map::width] = {};
-        int fvalueset[Map::height][Map::width] = {};
-        sf::Vector2i pathtrackset[Map::height][Map::width] = {};
+        // data structures needed for A*
 
-        openheap.push((Node) {start, &fvalueset[start.y][start.x]});
+        NodeHeap openheap; // stores the node with the least f_value at the top
+        std::vector<std::byte> nodeset(Map::height * Map::width); // tracks whether a node is in closed(2), open(1) or none(0)
+        std::vector<int> fvalueset(Map::height * Map::width); // tracks the f value of each node
+        std::vector<sf::Vector2i> pathtrackset(Map::height * Map::width); // tracks the parent node of each node
 
+        // pushes the starting node to the open set
+        openheap.push((Node) {start, &access(fvalueset, start.y, start.x)});
+        access(nodeset, start.y, start.x) = std::byte(1);
+
+        // main loop, runs till there are nodes to examine
         while (!openheap.empty()) {
 
-            auto min_node = openheap.top();
+            // get the node with the least f value and move it to closed
+            auto current = openheap.top();
             openheap.pop();
-            nodeset[min_node.pos.y][min_node.pos.x]= std::byte(2);
+            access(nodeset, current.pos.y, current.pos.x) = std::byte(2);
 
-            if (min_node.pos == end) {
+            // BREAK condition 2, the loop exits if target is found
+            if (current.pos == end) {
                 break;
             }
 
+            // finding the 8 (max) neighbours of our current node
+
             sf::Vector2i neighbours[8] = {};
-            int neighbour_count = findTileNeighbours(min_node.pos, neighbours);
+            int neighbour_count = findTileNeighbours(current.pos, neighbours);
 
             for (int i = 0; i < neighbour_count; i++) {
 
                 auto neighbour = neighbours[i];
 
-                if (nodeset[neighbour.y][neighbour.x] == std::byte(2)) {
+                int y = neighbour.y;
+                int x = neighbour.x;
+
+                if (access(nodeset, y, x) == std::byte(2)) {
                     continue;    
                 }
 
+                // find the heuristics of our neighbour, g for distance from start, h for distance from end
                 int g = findOctileDistance(neighbour, start);
                 int h = findOctileDistance(neighbour, end);
                 int f = g + h;
 
-                if (nodeset[neighbour.y][neighbour.x] != std::byte(1) || f < fvalueset[neighbour.y][neighbour.x]) {
+                // NOTE: the calculation of g here is not according to the standard A* implemenation
+                // normal A* requires g to accumulated as we travel but here i compute it directly
+                // primarily because its much simpler and the pathfinder still works as expected
 
-                    fvalueset[neighbour.y][neighbour.x] = f;
-                    pathtrackset[neighbour.y][neighbour.x] = min_node.pos;
+                if (access(nodeset, y, x) != std::byte(1) || f < access(fvalueset, y, x)) {
+                    // basically if the node is not in open OR the new path to node is quicker
+                    access(fvalueset, y, x) = f;
+                    access(pathtrackset, y, x) = current.pos;
 
-                    nodeset[neighbour.y][neighbour.x] = std::byte(1);
-                    openheap.push({.pos = neighbour, .f_value = &fvalueset[neighbour.y][neighbour.x]});
+                    access(nodeset, y, x) = std::byte(1);
+                    openheap.push({.pos = neighbour, .f_value = &access(fvalueset, y, x)});
                 }
             }
         }
+
+        // backtracking to make the path
 
         std::vector<sf::Vector2i> path = {};
 
         auto current = end;
         while (true) {
             path.push_back(current);
-            current = pathtrackset[current.y][current.x];
+            current = access(pathtrackset, current.y, current.x);
             if (current == start || current == (sf::Vector2i) {0,0}) break;
         }
         
