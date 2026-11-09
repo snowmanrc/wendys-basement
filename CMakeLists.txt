@@ -25,10 +25,12 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Compiler-specific debug flags and AddressSanitizer configuration
 target_compile_options(${PROJECT_NAME} PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/Zi /Od /W4 /RTC1>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-g -O0 -Wall -Wextra -fsanitize=address,undefined>
 )
 
 target_link_options(${PROJECT_NAME} PRIVATE
+    $<$<CXX_COMPILER_ID:MSVC>:/DEBUG>
     $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:-fsanitize=address,undefined>
 )
 
