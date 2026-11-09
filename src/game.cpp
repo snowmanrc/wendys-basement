@@ -21,14 +21,14 @@ namespace Game {
 
         state.player = {
             .shape = sf::CircleShape(16),
-            .position = {200, 200},
+            .position = {1204, 884},
             .size = 16,
             .speed = Player::walking_speed
         };
 
         state.ghost = {
             .shape = sf::CircleShape(16),
-            .position = {200, 200},
+            .position = {1204, 884},
             .size = 16,
             .speed = 600,
         };
@@ -41,7 +41,7 @@ namespace Game {
             {-2, -4},
         };
         
-        Map::load("");
+        Map::load("../../../src/assets/map.png");
     }
 
 
@@ -70,14 +70,15 @@ namespace Game {
 
     void render(State& state) {
         state.window.clear();
-        state.window.setView(state.camera);
         state.camera.setCenter(state.player.position);
+        state.window.setView(state.camera);
+        
 
         for (int i = 0; i < Map::height; i++) {
             for (int j = 0; j < Map::width; j++) {
 
                 auto tile = Map::grid[i][j];
-                
+               
                 if (tile == 0) continue;
 
                 float x = j * Map::tilesize;
@@ -97,6 +98,7 @@ namespace Game {
         state.ghost.shape.setFillColor(sf::Color::Magenta);
         state.window.draw(state.ghost.shape);
 
+        
         state.window.display();
     }
 
