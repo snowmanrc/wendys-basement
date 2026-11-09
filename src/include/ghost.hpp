@@ -17,4 +17,8 @@ namespace Ghost {
     };
 
     void updatePosition(Entity& ghost, float dt);
+    bool hasCollided(Entity& ghost);
+    void follow(Entity& ghost, sf::Vector2i target_tile);
+    
+    std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);
 }

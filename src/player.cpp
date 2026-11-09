@@ -4,6 +4,7 @@
 
 #include "include/debug.hpp"
 #include "include/map.hpp"
+#include "include/utils.hpp"
 #include "include/player.hpp"
 
 
@@ -65,10 +66,10 @@ namespace Player {
 
 
 	bool hasCollided(Entity& player) {
-
-		float r = player.shape.getRadius();
-		float px = player.position.x + r;
-		float py = player.position.y + r;
+        
+		float cr = player.shape.getRadius();
+		float cx = player.position.x + cr;
+		float cy = player.position.y + cr;
 
 		for (int i = 0; i < Map::height; i++) {
 			for (int j = 0; j < Map::width; j++) {
@@ -77,28 +78,19 @@ namespace Player {
 				
 				if (tile == 0) continue;
 
-				float x = j * Map::tilesize;
-				float y = i * Map::tilesize;
-				int w = Map::tilesize, h = Map::tilesize;
+				float rx = j * Map::tilesize;
+				float ry = i * Map::tilesize;
+				int rw = Map::tilesize, rh = Map::tilesize;
 				
-				// collision detection
+				bool collided = Utils::detectCircleRectCollision(cr, cx, cy, rx, ry, rw, rh);
+				
 
-				float closest_x = std::max(x, std::min(px, x + w));
-				float closest_y = std::max(y, std::min(py, y + h));
-
-				float dist_x = px - closest_x;
-				float dist_y = py - closest_y;
-				float dist_sq = (dist_x * dist_x) + (dist_y * dist_y);
-
-				// optimization: not taking sqrt() because its an expensive operation
-
-				bool has_collided = dist_sq <= (r * r);
-
-				if (has_collided) return true;
+				if (collided) return true;
 			}
 		}
 
 		return false;
-	}
+    }
+
 
 }

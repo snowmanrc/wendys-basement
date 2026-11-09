@@ -3,3 +3,6 @@ out
 .vs
 CMakeSettings.json
 vc140.pdb
+*.dll
+.cache
+.vscode
