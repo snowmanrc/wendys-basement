@@ -165,6 +165,7 @@ namespace Ghost {
         NodeHeap openheap; // stores the node with the least f_value at the top
         std::vector<std::byte> nodeset(Map::height * Map::width); // tracks whether a node is in closed(2), open(1) or none(0)
         std::vector<int> fvalueset(Map::height * Map::width); // tracks the f value of each node
+        std::vector<int> gvalueset(Map::height * Map::width); // tracks the g value of each node
         std::vector<sf::Vector2i> pathtrackset(Map::height * Map::width); // tracks the parent node of each node
 
         // optimization: i am using flat 1d vectors here instead of 2d arrays because
@@ -205,17 +206,15 @@ namespace Ghost {
                 }
 
                 // find the heuristics of our neighbour, g for distance from start, h for distance from end
-                int g = findOctileDistance(neighbour, start);
+                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x);
                 int h = findOctileDistance(neighbour, end);
                 int f = g + h;
 
-                // NOTE: the calculation of g here is not according to the standard A* implemenation
-                // normal A* requires g to accumulated as we travel but here i compute it directly
-                // primarily because its much simpler and the pathfinder still works as expected
 
                 if (access(nodeset, y, x) != std::byte(1) || f < access(fvalueset, y, x)) {
                     // basically if the node is not in open OR the new path to node is quicker
                     access(fvalueset, y, x) = f;
+                    access(gvalueset, y, x) = g;
                     access(pathtrackset, y, x) = current.pos;
 
                     access(nodeset, y, x) = std::byte(1);
