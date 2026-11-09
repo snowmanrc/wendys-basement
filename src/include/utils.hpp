@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/System/Vector2.hpp>
 #include <algorithm>
 
 namespace Utils {
@@ -17,5 +18,13 @@ namespace Utils {
         // optimization: not taking sqrt() because its an expensive operation
 
         return dist_sq <= (cr * cr);
+    }
+
+    static inline sf::Vector2i
+    cartesianToTiledVector(sf::Vector2f v, int scale) {
+        return {
+        static_cast<int>(v.x / scale), 
+        static_cast<int>(v.y / scale)
+        };
     }
 }

@@ -24,16 +24,12 @@ namespace Ghost {
         if (ghost.path.empty()) return;
 
         auto target_tile = ghost.path.back();
-        sf::Vector2i ghost_tile = {
-            static_cast<int>((ghost.position.x) / Map::tilesize), 
-            static_cast<int>((ghost.position.y) / Map::tilesize)
-        };
+        sf::Vector2i ghost_tile = Utils::cartesianToTiledVector(ghost.position, Map::tilesize);
 
         if (target_tile == ghost_tile) {
             ghost.path.pop_back();
             return;
         }
-
         
         if (target_tile != last_target_tile || ghost_tile != last_ghost_tile) {
             stuck_clock.restart();
@@ -108,12 +104,9 @@ namespace Ghost {
 
     void follow(Entity& ghost, sf::Vector2i target_tile) {
 
-        sf::Vector2i ghost_tile = {
-            static_cast<int>((ghost.position.x + ghost.size) / Map::tilesize), 
-            static_cast<int>((ghost.position.y + ghost.size) / Map::tilesize)
-        };
-
+        sf::Vector2i ghost_tile = Utils::cartesianToTiledVector(ghost.position, Map::tilesize);
         ghost.path = Ghost::findPath(ghost_tile, target_tile);
+        
     }
     
 

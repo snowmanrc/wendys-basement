@@ -8,6 +8,7 @@
 #include "include/map.hpp"
 #include "include/player.hpp"
 #include "include/graphics.hpp"
+#include "include/utils.hpp"
 
 
 namespace Game {
@@ -18,6 +19,7 @@ namespace Game {
 
         state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
         state.window.setFramerateLimit(120);
+
         state.camera.setSize({1920, 1080});
 
         state.player = {
@@ -35,10 +37,8 @@ namespace Game {
         };
 
         Map::load("");
-        sf::Vector2i player_tile = {
-            static_cast<int>(state.player.position.x / Map::tilesize), 
-            static_cast<int>(state.player.position.y / Map::tilesize)
-        };
+
+        sf::Vector2i player_tile = Utils::cartesianToTiledVector(state.player.position, Map::tilesize);
         Ghost::follow(state.ghost, player_tile); 
     }
 
@@ -72,10 +72,7 @@ namespace Game {
         sf::Time elapsed = pathfindingClock.getElapsedTime();
 
         if (elapsed >= pathfindingInterval) {
-            sf::Vector2i player_tile = {
-                static_cast<int>(state.player.position.x / Map::tilesize), 
-                static_cast<int>(state.player.position.y / Map::tilesize)
-            };
+            sf::Vector2i player_tile = Utils::cartesianToTiledVector(state.player.position, Map::tilesize);
             Ghost::follow(state.ghost, player_tile); 
             // Reset the clock for the next interval
             pathfindingClock.restart();
