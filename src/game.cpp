@@ -7,6 +7,7 @@
 #include "include/ghost.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
+#include "include/graphics.hpp"
 
 
 namespace Game {
@@ -87,29 +88,9 @@ namespace Game {
         state.window.setView(state.camera);
         state.camera.setCenter(state.player.position);
 
-        for (int i = 0; i < Map::height; i++) {
-            for (int j = 0; j < Map::width; j++) {
-
-                auto tile = Map::grid[i][j];
-                
-                if (tile == 0) continue;
-
-                float x = j * Map::tilesize;
-                float y = i * Map::tilesize;
-
-                auto shape = sf::RectangleShape({Map::tilesize, Map::tilesize});
-                shape.setFillColor(sf::Color::Yellow);
-                shape.setPosition({x, y});
-                state.window.draw(shape);
-            }
-        }
-        state.player.shape.setPosition(state.player.position);
-        state.player.shape.setFillColor(sf::Color::Red);
-        state.window.draw(state.player.shape);
-
-        state.ghost.shape.setPosition(state.ghost.position);
-        state.ghost.shape.setFillColor(sf::Color::Magenta);
-        state.window.draw(state.ghost.shape);
+        Graphics::drawMap(state.window);
+        Graphics::drawPlayer(state.window, state.player);
+        Graphics::drawGhost(state.window, state.ghost);
 
         state.window.display();
     }
