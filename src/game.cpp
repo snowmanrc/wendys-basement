@@ -5,6 +5,7 @@
 #include <SFML/System/Vector2.hpp>
 
 #include "include/game.hpp"
+#include "include/debug.hpp"
 #include "include/ghost.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
@@ -25,6 +26,8 @@ namespace Game {
         state.ghost = Ghost::Entity({10, 40});
 
         Map::load("assets/map.png");
+
+        DEBUG("GAME: Initialized State");
     }
 
 
@@ -32,12 +35,12 @@ namespace Game {
         while (const auto event = state.window.pollEvent()) {
 
             if (event->is<sf::Event::Closed>()) {
-                state.running = false;
+                Game::end(state);
             }
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    state.running = false;
+                    Game::end(state);
                 }
             }
         }
@@ -89,6 +92,8 @@ namespace Game {
         if (state.window.isOpen()) {
             state.window.close();
         }
+
+        DEBUG("GAME: Bye Bye");
     }
 
 

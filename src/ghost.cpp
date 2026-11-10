@@ -42,14 +42,6 @@ namespace Ghost {
 		if (hasCollided(ghost)) {
 			ghost.position.y = old_pos.y;
 		}
-
-        DEBUG(
-			"Ghost Position: Coordinate(%f, %f) Tiled(%i, %i)", 
-			ghost.position.x, 
-			ghost.position.y,
-			(int)(ghost.position.x / Map::tilesize),
-			(int)(ghost.position.y / Map::tilesize)
-		);
     }
 
 
@@ -84,8 +76,13 @@ namespace Ghost {
     void follow(Entity& ghost, sf::Vector2i target_tile) {
 
         sf::Vector2i ghost_tile = Utils::cartesianToTiledVector(ghost.position, Map::tilesize);
-        ghost.path = Ghost::findPath(ghost_tile, target_tile);
 
+        DEBUG(
+            "GHOST: Triggered Follow. Finding path from Tile(%i, %i) to Tile(%i, %i)",
+            ghost_tile.x, ghost_tile.y, target_tile.x, target_tile.y
+        );
+
+        ghost.path = Ghost::findPath(ghost_tile, target_tile);
     }
     
 

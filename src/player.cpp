@@ -56,7 +56,7 @@ namespace Player {
 		}
 
 		DEBUG(
-			"Player Position: Coordinate(%f, %f) Tiled(%i, %i)", 
+			"PLAYER: Position: Coordinate(%f, %f) Tiled(%i, %i)", 
 			player.position.x, 
 			player.position.y,
 			(int)(player.position.x / Map::tilesize),
