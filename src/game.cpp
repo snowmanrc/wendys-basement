@@ -2,6 +2,7 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "include/game.hpp"
 #include "include/ghost.hpp"
@@ -14,32 +15,16 @@
 namespace Game {
 
     void init(State& state) {
-
         state.running = true;
 
         state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
         state.window.setFramerateLimit(120);
-
         state.camera.setSize({1920, 1080});
 
-        state.player = {
-            .shape = sf::CircleShape(16),
-            .position = {1204, 884},
-            .size = 16,
-            .speed = Player::walking_speed
-        };
-
-        state.ghost = {
-            .shape = sf::CircleShape(40),
-            .position = {10, 400},
-            .size = 40,
-            .speed = 800,
-        };
+        state.player = Player::Entity({1200, 880});
+        state.ghost = Ghost::Entity({10, 40});
 
         Map::load("assets/map.png");
-
-        sf::Vector2i player_tile = Utils::cartesianToTiledVector(state.player.position, Map::tilesize);
-        Ghost::follow(state.ghost, player_tile); 
     }
 
 
@@ -84,15 +69,14 @@ namespace Game {
 
 
     void render(State& state) {
+
         state.window.clear();
         state.camera.setCenter(state.player.position);
         state.window.setView(state.camera);
         
-
         Graphics::drawMap(state.window);
         Graphics::drawPlayer(state.window, state.player);
         Graphics::drawGhost(state.window, state.ghost);
-
         
         state.window.display();
     }
@@ -112,7 +96,6 @@ namespace Game {
 
         State state;
         init(state);
-
         
         while (state.running) {
             handleEvents(state);

@@ -23,9 +23,9 @@ namespace Player {
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || 
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)
 		) {
-			player.speed = Player::running_speed;
+			player.speed = Player::RUNNING_SPEED;
 		} else {
-			player.speed = Player::walking_speed;
+			player.speed = Player::WALKING_SPEED;
 		}
 
 		// early return so we don't have to do any computation when the player is not moving
