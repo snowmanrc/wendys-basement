@@ -16,16 +16,22 @@
 namespace Game {
 
     void init(State& state) {
-        state.running = true;
+        state.closed = false;
 
         state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
         state.window.setFramerateLimit(120);
         state.camera.setSize({1920, 1080});
+    }
+
+
+    void start(State& state) {
+
+        state.running = true;
 
         state.player = Player::Entity({1200, 880});
-        state.ghost = Ghost::Entity({10, 40});
+        state.ghost = Ghost::Entity({100, 400});
 
-        Map::load("assets/map.png");
+        Map::load("assets/map-final.png");
 
         DEBUG("GAME: Initialized State");
     }
@@ -87,7 +93,8 @@ namespace Game {
 
     void end(State& state) {
         
-        if (!state.running) return;
+        state.running = false;
+        state.closed = true;
 
         if (state.window.isOpen()) {
             state.window.close();
@@ -100,13 +107,16 @@ namespace Game {
     void run() {
 
         State state;
+        init(state);
 
-        while (true) {
-
-            init(state);
+        while (!state.closed) {
 
             int chosen = Graphics::triggerMenu(state.window, "Wendy's Basement", "Play", "Quit");
-            if (chosen == 2) break; 
+            if (chosen == 1) {
+                start(state);
+            } else {
+                end(state);
+            };
             
             while (state.running) {
                 handleEvents(state);
@@ -114,8 +124,5 @@ namespace Game {
                 render(state);
             }
         }
-        
-        end(state);
     }
-
 }

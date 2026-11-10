@@ -10,6 +10,7 @@
 namespace Game {
 
     struct State {
+        bool closed;
         sf::RenderWindow window;
         sf::View camera;
         sf::Clock clock;
@@ -20,6 +21,7 @@ namespace Game {
     };
 
     void init(State& state);
+    void start(State& state);
     void update(State& state);
     void handleEvents(State& state);
     void render(State& state);
