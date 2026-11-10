@@ -89,6 +89,15 @@ namespace Ghost {
     }
     
 
+    bool hasCaughtPlayer(Entity& ghost, Player::Entity& player) {
+        auto diff = ghost.position - player.position;
+        float dist = diff.length() - ghost.size - player.size;
+        
+        // pixels
+        if (dist < 50) return true;
+        return false;
+    };
+
     static inline int
     findTileNeighbours(sf::Vector2i tile, sf::Vector2i neighbours[]) {
     

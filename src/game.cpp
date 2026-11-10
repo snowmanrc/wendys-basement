@@ -30,10 +30,10 @@ namespace Game {
         };
 
         state.ghost = {
-            .shape = sf::CircleShape(16),
+            .shape = sf::CircleShape(40),
             .position = {10, 400},
-            .size = 16,
-            .speed = 500,
+            .size = 40,
+            .speed = 800,
         };
 
         Map::load("assets/map.png");
@@ -59,6 +59,7 @@ namespace Game {
     }
 
     void update(State& state) {
+
         state.dt = state.clock.restart().asSeconds();
 
         Player::updatePosition(state.player, state.dt);       
@@ -66,7 +67,7 @@ namespace Game {
 
 
         static sf::Clock pathfindingClock;
-        sf::Time pathfindingInterval = sf::seconds(0.5f); // Run every 0.5 seconds
+        sf::Time pathfindingInterval = sf::seconds(0.1f); // Run every 0.5 seconds
 
         // Inside your main game loop:
         sf::Time elapsed = pathfindingClock.getElapsedTime();
@@ -77,6 +78,8 @@ namespace Game {
             // Reset the clock for the next interval
             pathfindingClock.restart();
         }
+
+        if (Ghost::hasCaughtPlayer(state.ghost, state.player)) state.running = false;
     }
 
 

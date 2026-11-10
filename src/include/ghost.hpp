@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include "player.hpp"
+
 
 namespace Ghost {
 
@@ -18,6 +20,8 @@ namespace Ghost {
 
     void updatePosition(Entity& ghost, float dt);
     bool hasCollided(Entity& ghost);
+    bool hasCaughtPlayer(Entity& ghost, Player::Entity& player);
+    
     void follow(Entity& ghost, sf::Vector2i target_tile);
     
     std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);
