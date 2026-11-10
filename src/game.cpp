@@ -31,7 +31,7 @@ namespace Game {
         state.player = Player::Entity({1200, 880});
         state.ghost = Ghost::Entity({100, 400});
 
-        Map::load("assets/map-final.png");
+        Map::load("assets/map.png");
 
         DEBUG("GAME: Initialized State");
     }
