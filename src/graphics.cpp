@@ -50,5 +50,18 @@ namespace Graphics {
         ghost.shape.setFillColor(sf::Color::Magenta);
         window.draw(ghost.shape);
     }
+
+
+    int
+    triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2) {
+        // title -> the top big text
+        // option1 -> contents of button 1
+        // option2 -> contents of button 2
+
+        // return type:
+        // if option1 chosen -> return 1
+        // if option2 chosen -> return 2
+        return 1; // or 2 depending on what's chosen
+    };
     
 }

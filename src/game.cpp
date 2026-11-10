@@ -100,14 +100,21 @@ namespace Game {
     void run() {
 
         State state;
-        init(state);
-        
-        while (state.running) {
-            handleEvents(state);
-            update(state);
-            render(state);
-        }
 
+        while (true) {
+
+            init(state);
+
+            int chosen = Graphics::triggerMenu(state.window, "Wendy's Basement", "Play", "Quit");
+            if (chosen == 2) break; 
+            
+            while (state.running) {
+                handleEvents(state);
+                update(state);
+                render(state);
+            }
+        }
+        
         end(state);
     }
 
