@@ -24,6 +24,14 @@ src/ -> Main Code
 
 assets/ -> Game Assets
 ```
+
+## Project Features (for evaluation)
+
++ Graphics library `sfml` used, specifically 3.x version.
++ Pathfinding algorithm used is `A*`
++ Contains a `dynamic map loader` to load the map from a png.
++ Has `switchable debugging` for development vs production builds. 
+
 ## Assets
 
 + Music from Youtube.
