@@ -10,6 +10,7 @@
 #include "include/map.hpp"
 #include "include/player.hpp"
 #include "include/graphics.hpp"
+#include "include/sound.hpp"
 #include "include/utils.hpp"
 
 
@@ -109,7 +110,11 @@ namespace Game {
         State state;
         init(state);
 
+        Sound::startMusic(0);
+       
         while (!state.closed) {
+
+            Sound::pauseMusic();
 
             int chosen = Graphics::triggerMenu(state.window, "Wendy's Basement", "Play", "Quit");
             if (chosen == 1) {
@@ -118,6 +123,7 @@ namespace Game {
                 end(state);
             };
             
+            Sound::playMusic();
             while (state.running) {
                 handleEvents(state);
                 update(state);
