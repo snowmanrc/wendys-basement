@@ -2,6 +2,9 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Vector2.hpp>
 
 #include "include/game.hpp"
@@ -88,6 +91,24 @@ namespace Game {
         Graphics::drawPlayer(state.window, state.player);
         Graphics::drawGhost(state.window, state.ghost);
         
+
+        // todo: this needs to be moved to graphics.cpp once hamza is done with his menus
+        
+        sf::Texture texture;
+        if (texture.loadFromFile("assets/overlay.jpg")) {
+            sf::Sprite sprite(texture);
+            sf::RenderStates states;
+            states.blendMode = sf::BlendMultiply;
+            sprite.setScale(
+                {
+                    (float) state.camera.getSize().x / texture.getSize().x, 
+                    (float) state.camera.getSize().y / texture.getSize().y
+                }
+            );
+            sprite.setPosition(state.player.position - sf::Vector2f(state.camera.getSize().x/2.0f, state.camera.getSize().y/2.0f));
+            state.window.draw(sprite, states);
+        }
+
         state.window.display();
     }
 
