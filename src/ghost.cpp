@@ -126,7 +126,11 @@ namespace Ghost {
             {1, 0},
             {-1, 0},
             {0, 1},
-            {0, -1}
+            {0, -1},
+            {1, 1},
+            {1,-1},
+            {-1, 1},
+            {-1, -1}
         };
 
         for (auto dir: directions) {
@@ -238,7 +242,7 @@ namespace Ghost {
                 }
 
                 // find the heuristics of our neighbour, g for distance from start, h for distance from end
-                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x) + (isTileNextToWall(neighbour) ? 1: 0);
+                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x) + (isTileNextToWall(neighbour) ? 10: 0);
                 int h = findOctileDistance(neighbour, end);
                 int f = g + h;
 

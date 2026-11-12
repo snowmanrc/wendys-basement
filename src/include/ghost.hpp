@@ -13,7 +13,7 @@ namespace Ghost {
     const float WALKING_SPEED = 500;
     const float RUNNING_SPEED = 900;
 
-    const float SIZE = 42;
+    const float SIZE = 26;
 
     struct Entity {
         sf::CircleShape shape;
