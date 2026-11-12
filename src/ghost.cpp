@@ -118,6 +118,32 @@ namespace Ghost {
         return count;
         
     };
+
+    static inline bool
+    isTileNextToWall(sf::Vector2i tile) {
+
+        sf::Vector2i directions[] = {
+            {1, 0},
+            {-1, 0},
+            {0, 1},
+            {0, -1}
+        };
+
+        for (auto dir: directions) {
+            auto neighbour = tile + dir;
+
+            if (
+                neighbour.x < 0 || neighbour.x > Map::width ||
+                neighbour.y < 0 || neighbour.y > Map::height
+            ) {
+                continue;
+            }
+
+            if (Map::grid[neighbour.y][neighbour.x]) return true;
+        }
+        
+        return false;
+    }
     
 
     static inline int
@@ -212,7 +238,7 @@ namespace Ghost {
                 }
 
                 // find the heuristics of our neighbour, g for distance from start, h for distance from end
-                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x);
+                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x) + (isTileNextToWall(neighbour) ? 1: 0);
                 int h = findOctileDistance(neighbour, end);
                 int f = g + h;
 
