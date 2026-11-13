@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include<string>
 
 #include "player.hpp"
 #include "ghost.hpp"

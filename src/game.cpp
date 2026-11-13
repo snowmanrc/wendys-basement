@@ -50,7 +50,19 @@ namespace Game {
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    Game::end(state);
+                    int choice = Graphics::triggerMenu(state.window, "Paused", "Resume", "Main Menu");// calling menu same function again for pause menu
+
+                    if (choice == 2)// checking user choose  main menu
+                    {
+                        if (state.window.isOpen())
+                        {
+                            state.running = false;
+                        }
+                        else
+                        {
+                            Game::end(state);
+                        }
+                    }
                 }
             }
         }
@@ -147,6 +159,10 @@ namespace Game {
             Sound::playMusic();
             while (state.running) {
                 handleEvents(state);
+
+				if (!state.running || state.closed) // checking if gameplay has stopped or the game window has been closed
+                    break;
+
                 update(state);
                 render(state);
             }
