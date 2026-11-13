@@ -40,6 +40,14 @@ find_package(SFML 3 COMPONENTS Graphics Window System Audio REQUIRED)
 # Link SFML libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio)
 
+# Copy assets directory to the build output directory
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
+)
+
 # Windows-specific post-build DLL copying
 if(WIN32)
     add_custom_command(
