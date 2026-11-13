@@ -183,10 +183,10 @@ namespace Graphics {
                 // mouse movemnet 
                 if (const auto mouse = event->getIf<sf::Event::MouseMoved>())
                 {
-                    sf::Vector2f mousePosition( // store two cordinates in 2d positon form
-                        static_cast<float>(mouse->position.x),
-                        static_cast<float>(mouse->position.y)
-                    );
+                    sf::Vector2f mousePosition =
+                        window.mapPixelToCoords(mouse->position); // using sfml built in function in which we convert mouse pixel position to viwe cordinates
+
+                   
                     //cheking that mouse button is on the cursor or not
                     if (button1.getGlobalBounds().contains(mousePosition)) // cheeck area of button1 and check cursor lie on that area
                         selected = 0;
@@ -200,10 +200,10 @@ namespace Graphics {
                 {
                     if (mouse->button == sf::Mouse::Button::Left)
                     {
-                        sf::Vector2f mousePosition(
-                            static_cast<float>(mouse->position.x),
-                            static_cast<float>(mouse->position.y)
-                        );
+                        sf::Vector2f mousePosition =
+							window.mapPixelToCoords(mouse->position);// same as above we convert mouse pixel position to viwe cordinates
+
+                        
 
                         if (button1.getGlobalBounds().contains(mousePosition))
                             return 1;
