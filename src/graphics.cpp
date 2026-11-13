@@ -64,12 +64,12 @@ namespace Graphics {
 
 
     int
-        triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2) {
+        triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string backgroundImage) {
         
         window.setView(window.getDefaultView()); // to attain original window view when ghost cathch the player
         sf::Texture backgroundTexture; // to load image in memory
 
-        if (!backgroundTexture.loadFromFile("assets/menu_background.png"))
+        if (!backgroundTexture.loadFromFile(backgroundImage))
         {
             DEBUG("Failed to load background image");
             return 2;

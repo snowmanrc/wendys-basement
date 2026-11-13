@@ -13,5 +13,5 @@ namespace Graphics {
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player);
     void drawGhost(sf::RenderWindow& window, Ghost::Entity& ghost);
 
-    int triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2);
+    int triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string backgroundImage);
 }

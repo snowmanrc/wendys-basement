@@ -50,7 +50,7 @@ namespace Game {
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    int choice = Graphics::triggerMenu(state.window, "Paused", "Resume", "Main Menu");// calling menu same function again for pause menu
+                    int choice = Graphics::triggerMenu(state.window, "Paused", "Resume", "Main Menu", "assets/pause_background.png");// calling menu same function again for pause menu
 
                     if (choice == 2)// checking user choose  main menu
                     {
@@ -149,7 +149,7 @@ namespace Game {
 
             Sound::pauseMusic();
 
-            int chosen = Graphics::triggerMenu(state.window, "Wendy's Basement", "Play", "Quit");
+            int chosen = Graphics::triggerMenu(state.window, "Wendy's Basement", "Play", "Quit", "assets/menu_background.png");
             if (chosen == 1) {
                 start(state);
             } else {
