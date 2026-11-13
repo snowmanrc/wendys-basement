@@ -63,44 +63,44 @@ namespace Graphics {
     }
 
 
-    int
-        triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string backgroundImage) {
+    int triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string bg_image) {
         
-        window.setView(window.getDefaultView()); // to attain original window view when ghost cathch the player
-        sf::Texture backgroundTexture; // to load image in memory
+        window.setView(window.getDefaultView()); 
+        // to attain original window view when ghost cathch the player
 
-        if (!backgroundTexture.loadFromFile(backgroundImage))
+        sf::Texture background_texture; 
+
+        if (!background_texture.loadFromFile(bg_image))
         {
-            DEBUG("Failed to load background image");
-            return 2;
+            DEBUG("Failed to load menu background image");
+            return 0;
         }
 
-		sf::Sprite background(backgroundTexture);// to show image object on screen we need to create sprite and pass texture
+		sf::Sprite background(background_texture);
+        // to show image object on screen we need to create sprite and pass texture
 
-        sf::Vector2u imageSize = backgroundTexture.getSize(); // getting image original height and width
+        sf::Vector2u imageSize = background_texture.getSize(); // getting image original height and width
 
 		// setting background according to window size
+        // dividing required size by original size to get scale then sfml multiply this scale with orginal size to get required size
         background.setScale(
-            {   // dividing required size by original size to get scale then sfml multiply this scale with orginal size to get required size
+            {   
                  720.f / static_cast<float>(imageSize.x),
                  600.f / static_cast<float>(imageSize.y)
             }
-            );
-
-
+        );
 
         sf::Font font;
 
-        if (!font.openFromFile("assets/Creepster-Regular.ttf"))
-        {
+        if (!font.openFromFile("assets/Creepster-Regular.ttf")) {
             DEBUG("Failed to load font");
-            return 2;
         }
 
         // craeting menu title
-        sf::Text titleText(font, title, 48);
+        sf::Text titleText(font, title, 64);
 
-        titleText.setFillColor(sf::Color(160, 0, 24));// setting title color blood red(to make it make more creepy) these three numbers show intensity of color RGB 
+        titleText.setFillColor(sf::Color(160, 0, 24));
+        // setting title color blood red(to make it make more creepy) these three numbers show intensity of color RGB 
 
         // for making title at center
         sf::FloatRect bounds = titleText.getLocalBounds();
@@ -111,7 +111,8 @@ namespace Graphics {
             });
 
         // placing a title at horizental center
-        titleText.setPosition({ 360.f, 120.f });// 360 means half of width which is 720 and 120 means add 120 pixeils from verticle top(which is zero) in total height is 600
+        titleText.setPosition({ 360.f, 120.f });
+        // 360 means half of width which is 720 and 120 means add 120 pixeils from verticle top(which is zero) in total height is 600
 
         //creating first button
         sf::RectangleShape button1({ 250.f, 70.f });
@@ -126,10 +127,11 @@ namespace Graphics {
         button2.setOutlineColor(sf::Color(160, 0, 24));
 
         //creating  button text
-        sf::Text text1(font, option1, 32);
-        sf::Text text2(font, option2, 32);
+        sf::Text text1(font, option1, 24);
+        sf::Text text2(font, option2, 24);
 
-        text1.setFillColor(sf::Color(214, 208, 194)); // chosing old bane white color(because it looks more creepy)
+        text1.setFillColor(sf::Color(214, 208, 194)); 
+        // chosing old bane white color(because it looks more creepy)
         text2.setFillColor(sf::Color(214, 208, 194));
 
         //for making first button text at center like we do for title
@@ -140,7 +142,8 @@ namespace Graphics {
             bounds1.position.y + bounds1.size.y / 2.f
             });
 
-        text1.setPosition({ 360.f, 315.f });// for height we half the box height then add it into starting position height of the box
+        text1.setPosition({ 360.f, 315.f });
+        // for height we half the box height then add it into starting position height of the box
 
         //for second button text centering like above
         sf::FloatRect bounds2 = text2.getLocalBounds();
@@ -168,7 +171,8 @@ namespace Graphics {
                 }
 
                 // taking input from keyboard
-                if (const auto key = event->getIf<sf::Event::KeyPressed>())// if mouse event happen then this condition become false due to getif
+                // if mouse event happen then this condition become false due to getif
+                if (const auto key = event->getIf<sf::Event::KeyPressed>())
                 {
                     if (key->code == sf::Keyboard::Key::Up || key->code == sf::Keyboard::Key::Down)
                     {
@@ -183,14 +187,14 @@ namespace Graphics {
                 // mouse movemnet 
                 if (const auto mouse = event->getIf<sf::Event::MouseMoved>())
                 {
-                    sf::Vector2f mousePosition =
-                        window.mapPixelToCoords(mouse->position); // using sfml built in function in which we convert mouse pixel position to viwe cordinates
+                    sf::Vector2f mousePosition = window.mapPixelToCoords(mouse->position);
+                    // using sfml built in function in which we convert mouse pixel position to viwe cordinates
 
                    
                     //cheking that mouse button is on the cursor or not
-                    if (button1.getGlobalBounds().contains(mousePosition)) // cheeck area of button1 and check cursor lie on that area
+                    // cheeck area of button1 and check cursor lie on that area
+                    if (button1.getGlobalBounds().contains(mousePosition))
                         selected = 0;
-
                     else if (button2.getGlobalBounds().contains(mousePosition))
                         selected = 1;
                 }
@@ -200,10 +204,8 @@ namespace Graphics {
                 {
                     if (mouse->button == sf::Mouse::Button::Left)
                     {
-                        sf::Vector2f mousePosition =
-							window.mapPixelToCoords(mouse->position);// same as above we convert mouse pixel position to viwe cordinates
-
-                        
+                        sf::Vector2f mousePosition = window.mapPixelToCoords(mouse->position);
+                        // same as above we convert mouse pixel position to viwe cordinates
 
                         if (button1.getGlobalBounds().contains(mousePosition))
                             return 1;
@@ -212,9 +214,6 @@ namespace Graphics {
                             return 2;
                     }
                 }
-
-
-
             }
 
 
@@ -235,6 +234,7 @@ namespace Graphics {
 
             window.display(); // to show the menu on screen
         }
+
         return 2;
     }
     

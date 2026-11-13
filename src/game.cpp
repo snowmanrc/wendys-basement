@@ -49,10 +49,13 @@ namespace Game {
             }
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
+
                 if (key->code == sf::Keyboard::Key::Escape) {
+
                     int choice = Graphics::triggerMenu(state.window, "Paused", "Resume", "Main Menu", "assets/pause_background.png");// calling menu same function again for pause menu
 
-                    if (choice == 2)// checking user choose  main menu
+                    // checking user choose  main menu
+                    if (choice == 2)
                     {
                         if (state.window.isOpen())
                         {
@@ -64,6 +67,7 @@ namespace Game {
                         }
                     }
                 }
+                
             }
         }
     }
