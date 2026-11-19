@@ -7,7 +7,7 @@
 
 
 #ifdef DEBUG_MODE_ENABLED
-#define DEBUG(fmt, ...) fprintf(stderr, "[DEBUG] " fmt "\n", ##__VA_ARGS__)
+#define DEBUG(fmt, ...) printf("[DEBUG] " fmt "\n", ##__VA_ARGS__)
 #else
 #define DEBUG(fmt, ...) (void(0))
 #endif

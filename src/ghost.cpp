@@ -42,6 +42,14 @@ namespace Ghost {
 		if (hasCollided(ghost)) {
 			ghost.position.y = old_pos.y;
 		}
+
+        DEBUG(
+			"GHOST: Position: Coordinate(%f, %f) Tiled(%i, %i)", 
+			ghost.position.x, 
+			ghost.position.y,
+			(int)(ghost.position.x / Map::tilesize),
+			(int)(ghost.position.y / Map::tilesize)
+		);
     }
 
 
