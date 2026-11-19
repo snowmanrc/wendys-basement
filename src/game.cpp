@@ -34,24 +34,11 @@ namespace Game {
 
         state.clock = sf::Clock();
         
-        state.scene = Game::Scene::MainMenu;
+        state.scene = Game::Scene::Game;
         state.running = true;     
         
         Map::load("assets/map.png");
-
-        state.mainmenu = {
-            "Wendy's Basement",
-            "Play",
-            "Quit",
-            "assets/menu_background.png"
-        };
-
-        state.pausemenu = {
-            "Paused",
-            "Resume",
-            "Main Menu",
-            "assets/pause_background.png"
-        };
+        Game::start(state);
 
         DEBUG("GAME: Initialized game state.");
     }
@@ -87,7 +74,7 @@ namespace Game {
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    if (state.scene == Game::Scene::Game) state.scene = Game::Scene::PauseMenu;
+                    if (state.scene == Game::Scene::Game) state.running = false;
                 }
             }
         }
@@ -124,6 +111,7 @@ namespace Game {
 
         state.window.clear();
         state.camera.setCenter(state.player.position);
+        state.window.setView(state.camera);
 
         if (state.scene == Game::Scene::Game) {
             Graphics::drawMap(state.window);
@@ -131,33 +119,7 @@ namespace Game {
             Graphics::drawPlayer(state.window, state.player);
             Graphics::drawOverlay(state.window, state.camera, state.player);
         }
-        else if (state.scene == Game::Scene::MainMenu) {
-            int chosen = Graphics::showMenu(
-                state.window,
-                state.mainmenu
-            );
 
-            if (chosen == 1) {
-                Game::start(state);
-            }
-            else if (chosen == 2) {
-                Game::close(state);
-            }
-        }
-        else {
-            int chosen = Graphics::showMenu(
-                state.window,
-                state.pausemenu
-            );
-
-            if (chosen == 1) {
-                state.scene = Game::Scene::Game;
-            }
-            else if (chosen == 2){
-                state.scene = Game::Scene::MainMenu;
-            }
-        }
-        
         state.window.display();
     }
 

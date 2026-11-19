@@ -71,7 +71,6 @@ namespace Ghost {
 				int rw = Map::tilesize, rh = Map::tilesize;
 				
 				bool collided = Utils::detectCircleRectCollision(cr, cx, cy, rx, ry, rw, rh);
-				
 
 				if (collided) return true;
 			}
@@ -250,7 +249,7 @@ namespace Ghost {
                 }
 
                 // find the heuristics of our neighbour, g for distance from start, h for distance from end
-                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x) + (isTileNextToWall(neighbour) ? 10: 0);
+                int g = findOctileDistance(neighbour, current.pos) + access(gvalueset, current.pos.y, current.pos.x) + (isTileNextToWall(neighbour) ? 20: 0);
                 int h = findOctileDistance(neighbour, end);
                 int f = g + h;
 
