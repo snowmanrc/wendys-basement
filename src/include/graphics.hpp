@@ -16,11 +16,25 @@
 namespace Graphics {
 
     void drawMap(sf::RenderWindow& window);
+
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player);
+
     void drawGhost(sf::RenderWindow& window, Ghost::Entity& ghost);
 
-    
-    
     void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player);
-    int triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string backgroundImage);
+
+
+    struct Menu {
+        std::string title;
+        std::string option1;
+        std::string option2;
+        std::string bg_path;
+        int selected;
+        bool chosen;
+        bool bg_loaded;
+    };
+
+    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg);
+    void showMenu(sf::RenderWindow& window, Menu& menu);
+    int getChosenMenuOption(Menu& menu);
 }

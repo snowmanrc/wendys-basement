@@ -9,6 +9,8 @@
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <type_traits>
 
 #include "include/game.hpp"
 #include "include/debug.hpp"
@@ -22,25 +24,32 @@
 
 namespace Game {
 
-    void init(State& state) {
+    State init() {
 
-        state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/menu_background.png");
+        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu", "assets/pause_background.png");
+
+        State state = {
+            sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
+            sf::View(),
+            sf::Clock(),
+            Game::Scene::MainMenu,
+            {},
+            {},
+            main_menu,
+            pause_menu,
+            true,
+            0
+        };
+
         state.window.setFramerateLimit(120);
-
-        state.camera = sf::View();
         state.camera.setSize({1920, 1080});
 
-        state.window.setView(state.camera);
-
-        state.clock = sf::Clock();
-        
-        state.scene = Game::Scene::Game;
-        state.running = true;     
-        
         Map::load("assets/map.png");
-        Game::start(state);
 
         DEBUG("GAME: Initialized game state.");
+
+        return state;
     }
 
 
@@ -74,7 +83,15 @@ namespace Game {
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    if (state.scene == Game::Scene::Game) state.running = false;
+                    if (state.scene == Game::Scene::Game) state.scene = Scene::PauseMenu;
+                }
+
+                if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
+                    auto& menu = state.scene == Game::Scene::MainMenu ? state.main_menu: state.pause_menu;
+
+                    if (key->code == sf::Keyboard::Key::Num1) menu.selected = 1;
+                    if (key->code == sf::Keyboard::Key::Num2) menu.selected = 2;
+                    if (key->code == sf::Keyboard::Key::Enter) menu.chosen = true;
                 }
             }
         }
@@ -110,16 +127,38 @@ namespace Game {
     void render(State& state) {
 
         state.window.clear();
-        state.camera.setCenter(state.player.position);
-        state.window.setView(state.camera);
 
         if (state.scene == Game::Scene::Game) {
+            state.camera.setCenter(state.player.position);
+            state.window.setView(state.camera);
+
             Graphics::drawMap(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
             Graphics::drawOverlay(state.window, state.camera, state.player);
         }
+        else if (state.scene == Game::Scene::MainMenu) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
 
+            Graphics::showMenu(state.window, state.main_menu);
+            int chosen = Graphics::getChosenMenuOption(state.main_menu);
+
+            if (chosen == 1) Game::start(state);
+            else if (chosen == 2) state.running = false;
+        }
+        else if (state.scene == Game::Scene::PauseMenu) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
+
+            Graphics::showMenu(state.window, state.pause_menu);
+            int chosen = Graphics::getChosenMenuOption(state.pause_menu);
+
+            if (chosen == 1) state.scene = Game::Scene::Game;
+            else if (chosen == 2) state.scene = Game::Scene::MainMenu;
+        }
+
+        
         state.window.display();
     }
 
@@ -127,8 +166,7 @@ namespace Game {
 
     void run() {
 
-        State state;
-        Game::init(state);
+        State state = Game::init();
 
         while (state.running) {
             Game::handleEvents(state);

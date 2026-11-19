@@ -24,12 +24,14 @@ namespace Game {
         Scene scene;
         Player::Entity player;
         Ghost::Entity  ghost;
+        Graphics::Menu main_menu;
+        Graphics::Menu pause_menu;
         bool running;
         float dt;
     };
 
     // Initializes the Game and setups the window
-    void init(State& state);
+    State init();
 
     // Closes the game
     void close(State& state);
