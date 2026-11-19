@@ -63,6 +63,28 @@ namespace Graphics {
         window.draw(ghost.shape);
     }
 
+    
+    void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player) {
+        sf::Texture texture;
+
+        if (!texture.loadFromFile("assets/overlay.jpg")) {
+            DEBUG("GRAPHICS: WARNING: overlay file not found!");
+            return;
+        }
+
+        sf::Sprite sprite(texture);
+        sf::RenderStates states;
+        states.blendMode = sf::BlendMultiply;
+        sprite.setScale(
+            {
+                (float) camera.getSize().x / texture.getSize().x, 
+                (float) camera.getSize().y / texture.getSize().y
+            }
+        );
+        sprite.setPosition(player.position - sf::Vector2f(camera.getSize().x/2.0f, camera.getSize().y/2.0f));
+        window.draw(sprite, states);  
+    }
+
 
     int triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string bg_image) {
         

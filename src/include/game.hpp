@@ -24,8 +24,6 @@ namespace Game {
         Scene scene;
         Player::Entity player;
         Ghost::Entity  ghost;
-        Graphics::MenuContext mainmenu;
-        Graphics::MenuContext pausemenu;
         bool running;
         float dt;
     };
