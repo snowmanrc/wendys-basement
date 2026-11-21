@@ -30,11 +30,11 @@ namespace Map {
 				sf::Color pixel = image.getPixel( { (unsigned int) j, (unsigned int) i});
                 
                 if (pixel == sf::Color::Black) {
-                    grid[i][j] = 0;
+                    grid[i][j] = 1;
                     continue;
                 }
 
-                grid[i][j] = 1;
+                grid[i][j] = 0;
 
                 if (pixel == sf::Color::Yellow) {
                     // logic here
