@@ -20,34 +20,57 @@
 #include "include/map.hpp"
 #include "include/player.hpp"
 #include "include/debug.hpp"
+#include "include/utils.hpp"
 
 
 namespace Graphics {
 
     static std::map<std::string, sf::Texture> textures;
 
+
+    static inline const sf::Texture&
+    getTexture(std::string path) {
+        if (Graphics::textures.contains(path)) {
+            return Graphics::textures[path];
+        }
+
+        sf::Texture texture;
+        bool loaded = texture.loadFromFile(path);
+        // failure here
+        Graphics::textures[path] = texture;
+        return Graphics::textures[path];
+    }
+
     void drawMap(sf::RenderWindow& window) {
+
+        auto texture = Graphics::getTexture("assets/wall.png");
+        auto wall = sf::Sprite(texture);
+        wall.setScale({
+            Map::tilesize / static_cast<float>(texture.getSize().x),
+            Map::tilesize / static_cast<float>(texture.getSize().y)
+        });
+
+        auto texture2 = Graphics::getTexture("assets/floor.png");
+        auto floor = sf::Sprite(texture2);
+        floor.setScale({
+            Map::tilesize / static_cast<float>(texture2.getSize().x),
+            Map::tilesize / static_cast<float>(texture2.getSize().y)
+        });
 
         for (int i = 0; i < Map::height; i++) {
             for (int j = 0; j < Map::width; j++) {
 
                 auto tile = Map::grid[i][j];
                 
-                sf::Color color;
-
                 if (tile == 0) {
-                    continue;
+                    floor.setPosition(Utils::tiledToCartesianVector({j, i}, Map::tilesize));
+                    window.draw(floor);
                 } else {
-                    color = sf::Color(41, 59, 61, 255);
+                    wall.setPosition(Utils::tiledToCartesianVector({j, i}, Map::tilesize));
+                    window.draw(wall);
                 }
 
-                float x = j * Map::tilesize;
-                float y = i * Map::tilesize;
-
-                auto shape = sf::RectangleShape({Map::tilesize, Map::tilesize});
-                shape.setFillColor(color);
-                shape.setPosition({x, y});
-                window.draw(shape);
+                
             }
         }
 
@@ -55,16 +78,26 @@ namespace Graphics {
 
 
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player) {
-        player.shape.setPosition(player.position);
-        player.shape.setFillColor(sf::Color::Red);
-        window.draw(player.shape);
+        auto texture = Graphics::getTexture("assets/player.png");
+        auto sprite = sf::Sprite(texture);
+        sprite.setScale({
+            player.size / static_cast<float>(texture.getSize().x) * 2.5f,
+            player.size / static_cast<float>(texture.getSize().y) * 2.5f
+        });
+        sprite.setPosition(player.position);
+        window.draw(sprite);
     }
 
 
     void drawGhost(sf::RenderWindow& window, Ghost::Entity& ghost) {
-        ghost.shape.setPosition(ghost.position);
-        ghost.shape.setFillColor(sf::Color::Magenta);
-        window.draw(ghost.shape);
+        auto texture = Graphics::getTexture("assets/ghost.png");
+        auto sprite = sf::Sprite(texture);
+        sprite.setScale({
+            ghost.size / static_cast<float>(texture.getSize().x) * 3.5f,
+            ghost.size / static_cast<float>(texture.getSize().y) * 3.5f
+        });
+        sprite.setPosition(ghost.position);
+        window.draw(sprite);
     }
 
     
