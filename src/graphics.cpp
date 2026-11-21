@@ -124,6 +124,17 @@ namespace Graphics {
         window.draw(sprite, states);  
     }
 
+    void drawHUD(sf::RenderWindow& window, std::map<std::string, int> info) {
+        // at the top right corner, draw:
+        // VALUE: 5
+
+        for (auto pair: info) {
+            std::string text = pair.first;
+            int num = pair.second;
+
+            // logic here
+        }
+    }
 
     Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg) {
 

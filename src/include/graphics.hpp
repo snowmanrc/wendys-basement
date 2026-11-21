@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <map>
 #include<string>
 
 #include "player.hpp"
@@ -23,6 +24,7 @@ namespace Graphics {
 
     void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player);
 
+    void drawHUD(sf::RenderWindow& window, std::map<std::string, int> info);
 
     struct Menu {
         std::string title;
