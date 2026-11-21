@@ -26,6 +26,8 @@ namespace Graphics {
 
     void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count);
 
+    void drawProps(sf::RenderWindow& window);
+
     struct Menu {
         std::string title;
         std::string option1;

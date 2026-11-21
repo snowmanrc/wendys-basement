@@ -16,13 +16,16 @@ namespace Player {
         float size;
         float speed;
         bool hidden;
+        unsigned int crossed_found;
 
         Entity() = default;
         Entity(sf::Vector2f p):
-        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false) {}
+        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false), crossed_found(0) {}
     };
 
     void updatePosition(Entity& player, float dt);
     bool hasCollided(Entity& player);
     void tryHiding(Entity& player);
+    void tryCollectingCross(Entity& player);
+    bool hasWon(Entity& player);
 }

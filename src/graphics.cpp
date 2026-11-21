@@ -136,6 +136,25 @@ namespace Graphics {
         }
     }
 
+    void drawProps(sf::RenderWindow& window) {
+
+        for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
+            auto tile = Map::cross_slots[i];
+            sf::RectangleShape shape({Map::tilesize, Map::tilesize});
+            shape.setFillColor(sf::Color::Blue);
+            shape.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
+            window.draw(shape);
+        }
+
+        for (unsigned int i = 0; i < Map::crate_slots.size(); i++) {
+            auto tile = Map::crate_slots[i];
+            sf::RectangleShape shape({Map::tilesize, Map::tilesize});
+            shape.setFillColor(sf::Color::Green);
+            shape.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
+            window.draw(shape);
+        }
+    }
+
     Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg) {
 
         sf::Texture texture; 

@@ -46,14 +46,7 @@ namespace Game {
         state.window.setFramerateLimit(120);
         state.camera.setSize({1920, 1080});
 
-        bool loaded = Map::load("assets/map.png");
-
-        if (!loaded) {
-            DEBUG("GAME: ERROR: Failed to load map, cannot start game!");
-            exit(1);
-        }
-
-        Sound::startMusic(1);
+        Game::changeScene(state, Scene::MainMenu);
 
         DEBUG("GAME: Initialized game state.");
         
@@ -62,6 +55,13 @@ namespace Game {
 
 
     void start(State& state) {
+
+        bool loaded = Map::load("assets/map.png");
+
+        if (!loaded) {
+            DEBUG("GAME: ERROR: Failed to load map, cannot start game!");
+            exit(1);
+        }
 
         state.player = Player::Entity({1200, 880});
         state.ghost = Ghost::Entity({100, 400});
@@ -137,7 +137,14 @@ namespace Game {
 
         if (state.scene != Game::Scene::Playing) return;
 
-        Player::updatePosition(state.player, state.dt);       
+        Player::updatePosition(state.player, state.dt);  
+        Player::tryCollectingCross(state.player);     
+
+        if (Player::hasWon(state.player)) {
+            DEBUG("GAME: Player has won");
+            // win condition
+            exit(0);
+        }
         
         static sf::Clock path_finding_clock;
         sf::Time elapsed = path_finding_clock.getElapsedTime();
@@ -165,6 +172,7 @@ namespace Game {
             state.window.setView(state.camera);
 
             Graphics::drawMap(state.window);
+            Graphics::drawProps(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
             Graphics::drawOverlay(state.window, state.camera, state.player);

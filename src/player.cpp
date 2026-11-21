@@ -104,4 +104,24 @@ namespace Player {
 			return;
 		}
 	}
+
+	void tryCollectingCross(Entity& player) {
+
+		auto player_tile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
+
+		for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
+			auto cross_tile = Map::cross_slots[i];
+			if ((cross_tile - player_tile).lengthSquared() > 2) continue;
+				
+			Map::cross_slots.erase(Map::cross_slots.begin() + i);
+			player.crossed_found++;
+			DEBUG("PLAYER: Cross at Tiled(%d, %d) found. Key count: %d", cross_tile.x, cross_tile.y, player.crossed_found);
+			break;
+		}
+
+	}
+
+	bool hasWon(Entity& player) {
+		return player.crossed_found == Map::crosscount;
+	}
 }
