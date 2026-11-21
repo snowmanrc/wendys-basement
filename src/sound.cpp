@@ -1,20 +1,23 @@
 #include "include/sound.hpp"
 #include <SFML/Audio.hpp>
+#include <string>
 
 
 namespace Sound {
 
-    sf::Music myMusic;
-    int currentMusicId = -1;
+    sf::Music current_music;
+    int current_music_id = -1;
 
 
 
     /*
 
-    0 -> background music
-    1 -> chase music
-
-    for now, treat old doll as background music and do not add other music types.
+    0 -> background music (old_doll_slowed.mp3 for now)
+    1 -> chase music (old_doll_slowed.mp3 for now)
+    2 -> main menu music (faint-signal.mp3)
+    3 -> win condition music (faint-signal.mp3)
+    4 -> lose condition music (faint-signal.mp3)
+    5 -> pause screen music (faint-signal.mp3)
 
     the play, pause and stop functions should control the active music i.e. the one started by startMusic
 
@@ -24,36 +27,70 @@ namespace Sound {
 
     void startMusic(int id) {
 
+        if (current_music_id == id && current_music.getStatus() == sf::Music::Status::Playing) {
+            return;
+        }
+
+        std::string filepath;
+
+        bool loop = true;
+
         if (id == 0) {
+            filepath = "assets/old_doll_slowed.mp3";
+            loop = true;
+        }
+        else if (id == 1) {
+            filepath = "assets/old_doll_slowed.mp3";
+            loop = true;
+        }
+        else if (id == 2) {
+            filepath = "assets/faint-signal.mp3";
+            loop = true;
+        }
+        else if (id == 3) {
+            filepath = "assets/faint-signal.mp3";
+            loop = true;
+        }
+        else if (id == 4) {
+            filepath = "assets/faint-signal.mp3";
+            loop = true;
+        }
+        else if (id == 5) {
+            filepath = "assets/faint-signal.mp3";
+            loop = true;
+        }
+        else {
+            return;
+        }
 
-            if (myMusic.openFromFile("assets/old_doll_slowed.mp3")) {
-                myMusic.setLooping(true);
-                myMusic.play();
-                currentMusicId = id;
+        current_music.stop();
 
-            }
+        if (current_music.openFromFile(filepath)) {
 
+            current_music.setLooping(loop);
+            current_music.play();
+            current_music_id = id;
         }
 
     }
 
     void playMusic() {
-        if (currentMusicId != -1) {
-            myMusic.play();
+        if (current_music_id != -1) {
+            current_music.play();
         }
     }
 
     void pauseMusic() {
-        if (currentMusicId != -1) {
-            myMusic.pause();
+        if (current_music_id != -1) {
+            current_music.pause();
         }
 
     }
 
     void stopMusic() {
-        if (currentMusicId != -1) {
-            myMusic.stop();
-            currentMusicId = -1;
+        if (current_music_id != -1) {
+            current_music.stop();
+            current_music_id = -1;
         }
 
     }
