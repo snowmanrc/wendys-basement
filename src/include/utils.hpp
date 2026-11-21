@@ -2,6 +2,8 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 
 namespace Utils {
 
@@ -43,5 +45,17 @@ namespace Utils {
             top_left.x + scale / 2.0f,
             top_left.y + scale / 2.0f
         };
+    }
+
+    static inline int 
+    random() {
+        static bool random_init = false;
+
+        if (!random_init) {
+            srand(time(0));
+            random_init = true;
+        }
+
+        return rand();
     }
 }

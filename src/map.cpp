@@ -1,5 +1,6 @@
 #include "include/map.hpp"
 #include "include/debug.hpp"
+#include "include/utils.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <iostream>
 #include<SFML/Graphics/Image.hpp>
@@ -64,21 +65,14 @@ namespace Map {
             }
         }
 
-		// Randomly select cross slots from all_cross_slots
-        static bool randomStarted = false;
-
-        if (!randomStarted)
-        {
-            srand(time(0));
-            randomStarted = true;
-        }
+	
 
         int total = all_cross_slots.size();
         
         for (int i = 0; i < crosscount; i++)
         {
             // choosing random positions from the remaining positions
-            int randomIndex = i + rand() % (total - i);
+            int randomIndex = i + Utils::random() % (total - i);
 
             cross_slots.push_back(all_cross_slots[randomIndex]);
 

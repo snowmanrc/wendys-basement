@@ -15,16 +15,22 @@ namespace Ghost {
 
     const float SIZE = 26;
 
+    enum class WalkingMode {
+        Wandering, 
+        Chasing
+    };
+
     struct Entity {
         sf::CircleShape shape;
         sf::Vector2f position;
         float size;
         float speed;
+        WalkingMode mode;
         std::vector<sf::Vector2i> path;
 
         Entity() = default;
         Entity(sf::Vector2f p):
-        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED) {}
+        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), mode(WalkingMode::Wandering) {}
     };
 
     void updatePosition(Entity& ghost, float dt);

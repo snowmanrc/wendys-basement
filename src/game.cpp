@@ -123,21 +123,18 @@ namespace Game {
         if (state.scene != Game::Scene::Game) return;
 
         Player::updatePosition(state.player, state.dt);       
-        Ghost::updatePosition(state.ghost, state.dt);
+        
 
+        static sf::Clock path_finding_clock;
+        sf::Time elapsed = path_finding_clock.getElapsedTime();
 
-        static sf::Clock pathfindingClock;
-        sf::Time pathfindingInterval = sf::seconds(0.1f); // Run every 0.5 seconds
-
-        // Inside your main game loop:
-        sf::Time elapsed = pathfindingClock.getElapsedTime();
-
-        if (elapsed >= pathfindingInterval) {
-            sf::Vector2i player_tile = Utils::cartesianToTiledVector(state.player.position, Map::tilesize);
-            Ghost::follow(state.ghost, player_tile); 
+        if (elapsed >= sf::seconds(0.1f)) {
+            Ghost::decideTarget(state.ghost, state.player);
             // Reset the clock for the next interval
-            pathfindingClock.restart();
+            path_finding_clock.restart();
         }
+        
+        Ghost::updatePosition(state.ghost, state.dt);
 
         if (Ghost::hasCaughtPlayer(state.ghost, state.player)) state.scene = Game::Scene::MainMenu;
     }
@@ -154,7 +151,7 @@ namespace Game {
             Graphics::drawMap(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
-            Graphics::drawOverlay(state.window, state.camera, state.player);
+            //Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Keys Left"};
             int values[] = {100, 5};

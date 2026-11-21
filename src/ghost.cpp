@@ -79,6 +79,35 @@ namespace Ghost {
 		return false;
     }
 
+    void decideTarget(Entity& ghost, Player::Entity& player) {
+
+        float dist = (player.position - ghost.position).length();
+
+        if (player.hidden) {
+            ghost.mode = WalkingMode::Wandering;
+        }
+
+        // so even if the player is hidden, the ghost will still catch the player because the ghost was close
+        if (dist < 600) {
+            ghost.mode = WalkingMode::Chasing;
+        }
+
+        DEBUG("GHOST: Player Distance: %f", dist);
+        
+        if (ghost.mode == WalkingMode::Chasing) {
+            DEBUG("GHOST: Chasing Player");
+            sf::Vector2i player_tile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
+            Ghost::follow(ghost, player_tile); 
+        }
+        else {
+
+            if (!ghost.path.empty()) return;
+            DEBUG("GHOST: Wandering");
+
+            auto target = Map::ghost_idle_spots[Utils::random() % Map::ghost_idle_spots.size()];
+            Ghost::follow(ghost, target);
+        }
+    }
 
     void follow(Entity& ghost, sf::Vector2i target_tile) {
 
