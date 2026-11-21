@@ -1,11 +1,16 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <type_traits>
 
 #include "include/game.hpp"
 #include "include/debug.hpp"
@@ -19,42 +24,72 @@
 
 namespace Game {
 
-    void init(State& state) {
-        state.closed = false;
+    State init() {
 
-        state.window = sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/menu_background.png");
+        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu", "assets/pause_background.png");
+
+        State state = {
+            sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
+            sf::View(),
+            sf::Clock(),
+            Game::Scene::MainMenu,
+            {},
+            {},
+            main_menu,
+            pause_menu,
+            true,
+            0
+        };
+
         state.window.setFramerateLimit(120);
         state.camera.setSize({1920, 1080});
+
+        Map::load("assets/map.png");
+
+        DEBUG("GAME: Initialized game state.");
+
+        return state;
     }
 
 
     void start(State& state) {
 
-        state.running = true;
+        state.scene = Game::Scene::Game;
 
         state.player = Player::Entity({1200, 880});
         state.ghost = Ghost::Entity({100, 400});
 
-        Map::load("assets/map.png");
-
-        DEBUG("GAME: Initialized State");
+        DEBUG("GAME: Starting game, switched to Game scene.");
     }
 
+    void close(State& state) {
 
+        state.running = false;
+        if (state.window.isOpen()) {
+            state.window.close();
+        }
+
+        DEBUG("GAME: Bye Bye");
+    }
+
+    
     void handleEvents(State& state) {
         while (const auto event = state.window.pollEvent()) {
 
             if (event->is<sf::Event::Closed>()) {
-                Game::end(state);
+                state.running = false;
             }
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
-
                 if (key->code == sf::Keyboard::Key::Escape) {
+                    if (state.scene == Game::Scene::Game) state.scene = Scene::PauseMenu;
+                }
 
-                    int choice = Graphics::triggerMenu(state.window, "Paused", "Resume", "Main Menu", "assets/pause_background.png");// calling menu same function again for pause menu
-                    state.clock.restart();
+                if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
+                    auto& menu = state.scene == Game::Scene::MainMenu ? state.main_menu: state.pause_menu;
 
+<<<<<<< HEAD
                     // checking user choose  main menu
                     if (choice == 2)
                     {
@@ -63,12 +98,16 @@ namespace Game {
                             state.running = false;
                         }
                         else
-                        {
+                        {         
                             Game::end(state);
                         }
                     }
+=======
+                    if (key->code == sf::Keyboard::Key::Num1) menu.selected = 1;
+                    if (key->code == sf::Keyboard::Key::Num2) menu.selected = 2;
+                    if (key->code == sf::Keyboard::Key::Enter) menu.chosen = true;
+>>>>>>> 78c3be541839c752169d7f1cdacae108ec65e7ae
                 }
-                
             }
         }
     }
@@ -76,6 +115,8 @@ namespace Game {
     void update(State& state) {
 
         state.dt = state.clock.restart().asSeconds();
+
+        if (state.scene != Game::Scene::Game) return;
 
         Player::updatePosition(state.player, state.dt);       
         Ghost::updatePosition(state.ghost, state.dt);
@@ -94,83 +135,60 @@ namespace Game {
             pathfindingClock.restart();
         }
 
-        if (Ghost::hasCaughtPlayer(state.ghost, state.player)) state.running = false;
+        if (Ghost::hasCaughtPlayer(state.ghost, state.player)) state.scene = Game::Scene::MainMenu;
     }
 
 
     void render(State& state) {
 
         state.window.clear();
-        state.camera.setCenter(state.player.position);
-        state.window.setView(state.camera);
-        
-        Graphics::drawMap(state.window);
-        Graphics::drawPlayer(state.window, state.player);
-        Graphics::drawGhost(state.window, state.ghost);
-        
 
-        // todo: this needs to be moved to graphics.cpp once hamza is done with his menus
-        
-        sf::Texture texture;
-        if (texture.loadFromFile("assets/overlay.jpg")) {
-            sf::Sprite sprite(texture);
-            sf::RenderStates states;
-            states.blendMode = sf::BlendMultiply;
-            sprite.setScale(
-                {
-                    (float) state.camera.getSize().x / texture.getSize().x, 
-                    (float) state.camera.getSize().y / texture.getSize().y
-                }
-            );
-            sprite.setPosition(state.player.position - sf::Vector2f(state.camera.getSize().x/2.0f, state.camera.getSize().y/2.0f));
-            state.window.draw(sprite, states);
+        if (state.scene == Game::Scene::Game) {
+            state.camera.setCenter(state.player.position);
+            state.window.setView(state.camera);
+
+            Graphics::drawMap(state.window);
+            Graphics::drawGhost(state.window, state.ghost);
+            Graphics::drawPlayer(state.window, state.player);
+            Graphics::drawOverlay(state.window, state.camera, state.player);
+        }
+        else if (state.scene == Game::Scene::MainMenu) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
+
+            Graphics::showMenu(state.window, state.main_menu);
+            int chosen = Graphics::getChosenMenuOption(state.main_menu);
+
+            if (chosen == 1) Game::start(state);
+            else if (chosen == 2) state.running = false;
+        }
+        else if (state.scene == Game::Scene::PauseMenu) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
+
+            Graphics::showMenu(state.window, state.pause_menu);
+            int chosen = Graphics::getChosenMenuOption(state.pause_menu);
+
+            if (chosen == 1) state.scene = Game::Scene::Game;
+            else if (chosen == 2) state.scene = Game::Scene::MainMenu;
         }
 
+        
         state.window.display();
     }
 
 
-    void end(State& state) {
-        
-        state.running = false;
-        state.closed = true;
-
-        if (state.window.isOpen()) {
-            state.window.close();
-        }
-
-        DEBUG("GAME: Bye Bye");
-    }
-
 
     void run() {
 
-        State state;
-        init(state);
+        State state = Game::init();
 
-        Sound::startMusic(0);
-       
-        while (!state.closed) {
-
-            Sound::pauseMusic();
-
-            int chosen = Graphics::triggerMenu(state.window, "Wendy's Basement", "Play", "Quit", "assets/menu_background.png");
-            if (chosen == 1) {
-                start(state);
-            } else {
-                end(state);
-            };
-            
-            Sound::playMusic();
-            while (state.running) {
-                handleEvents(state);
-
-				if (!state.running || state.closed) // checking if gameplay has stopped or the game window has been closed
-                    break;
-
-                update(state);
-                render(state);
-            }
+        while (state.running) {
+            Game::handleEvents(state);
+            Game::update(state);
+            Game::render(state);
         }
+
+        Game::close(state);
     }
 }

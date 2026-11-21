@@ -1,6 +1,12 @@
 #pragma once
 
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/View.hpp>
 #include<string>
 
 #include "player.hpp"
@@ -10,8 +16,25 @@
 namespace Graphics {
 
     void drawMap(sf::RenderWindow& window);
+
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player);
+
     void drawGhost(sf::RenderWindow& window, Ghost::Entity& ghost);
 
-    int triggerMenu(sf::RenderWindow& window, std::string title, std::string option1, std::string option2, std::string backgroundImage);
+    void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player);
+
+
+    struct Menu {
+        std::string title;
+        std::string option1;
+        std::string option2;
+        std::string bg_path;
+        int selected;
+        bool chosen;
+        bool bg_loaded;
+    };
+
+    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg);
+    void showMenu(sf::RenderWindow& window, Menu& menu);
+    int getChosenMenuOption(Menu& menu);
 }
