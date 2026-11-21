@@ -5,9 +5,9 @@ A `horror game` I made along with my fellows for my `Programming Fundamentals` s
 ## Features
 
 + You are stuck in *Wendy's basement*.
-+ To escape, you must collect *5 keys*. After you have collected them, you must find the *exit door*.
++ To win, you must collect *5 crosses* randomly scattered across the basement.
 + Wendy lurks around the basement and will start *chasing* once she spots you.
-+ To get rid of her, you must *hide* in one of the crates scattered across the basement.
++ To save yourself from her, you must *hide* in one of the crates in the basement.
 
 ## Project Structure
 
@@ -29,8 +29,9 @@ assets/ -> Game Assets
 
 + Graphics library `sfml` used, specifically 3.x version.
 + Pathfinding algorithm used is `A*`
++ Simplistic `Ghost AI` (chasing and wandering)
 + Contains a `dynamic map loader` to load the map from a png.
-+ Has `switchable debugging` for development vs production builds. 
++ Has `switchable debugging` for development vs production builds.
 
 ## Assets
 
