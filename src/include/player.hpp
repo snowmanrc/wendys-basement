@@ -16,11 +16,11 @@ namespace Player {
         float size;
         float speed;
         bool hidden;
-        unsigned int crossed_found;
+        unsigned int crosses_found;
 
         Entity() = default;
         Entity(sf::Vector2f p):
-        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false), crossed_found(0) {}
+        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false), crosses_found(0) {}
     };
 
     void updatePosition(Entity& player, float dt);

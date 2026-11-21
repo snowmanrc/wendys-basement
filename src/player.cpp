@@ -114,14 +114,14 @@ namespace Player {
 			if ((cross_tile - player_tile).lengthSquared() > 2) continue;
 				
 			Map::cross_slots.erase(Map::cross_slots.begin() + i);
-			player.crossed_found++;
-			DEBUG("PLAYER: Cross at Tiled(%d, %d) found. Key count: %d", cross_tile.x, cross_tile.y, player.crossed_found);
+			player.crosses_found++;
+			DEBUG("PLAYER: Cross at Tiled(%d, %d) found. Key count: %d", cross_tile.x, cross_tile.y, player.crosses_found);
 			break;
 		}
 
 	}
 
 	bool hasWon(Entity& player) {
-		return player.crossed_found == Map::crosscount;
+		return player.crosses_found == Map::crosscount;
 	}
 }
