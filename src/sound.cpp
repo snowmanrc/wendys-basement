@@ -36,7 +36,7 @@ namespace Sound {
         bool loop = true;
 
         if (id == 0) {
-            filepath = "assets/old_doll_slowed.mp3";
+            filepath = "assets/faint-signal.mp3";
             loop = true;
         }
         else if (id == 1) {

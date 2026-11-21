@@ -31,6 +31,8 @@ namespace Ghost {
     bool hasCollided(Entity& ghost);
     bool hasCaughtPlayer(Entity& ghost, Player::Entity& player);
 
+    void decideTarget(Entity& ghost, Player::Entity& player);
+
     void follow(Entity& ghost, sf::Vector2i target_tile);
     
     std::vector<sf::Vector2i> findPath(sf::Vector2i start, sf::Vector2i end);

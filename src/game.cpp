@@ -1,4 +1,5 @@
 
+#include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -52,8 +53,10 @@ namespace Game {
             exit(1);
         }
 
-        DEBUG("GAME: Initialized game state.");
+        Sound::startMusic(1);
 
+        DEBUG("GAME: Initialized game state.");
+        
         return state;
     }
 
@@ -64,6 +67,8 @@ namespace Game {
 
         state.player = Player::Entity({1200, 880});
         state.ghost = Ghost::Entity({100, 400});
+
+        Sound::startMusic(0);
 
         DEBUG("GAME: Starting game, switched to Game scene.");
     }
@@ -88,7 +93,7 @@ namespace Game {
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    if (state.scene == Game::Scene::Game) state.scene = Scene::PauseMenu;
+                    if (state.scene == Game::Scene::Game) state.scene = Scene::PauseMenu, Sound::pauseMusic();
                 }
 
                 if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
@@ -145,7 +150,6 @@ namespace Game {
         else if (state.scene == Game::Scene::MainMenu) {
             state.camera.setCenter({ 960, 540 });
             state.window.setView(state.camera);
-
             Graphics::showMenu(state.window, state.main_menu);
             int chosen = Graphics::getChosenMenuOption(state.main_menu);
 
@@ -159,8 +163,8 @@ namespace Game {
             Graphics::showMenu(state.window, state.pause_menu);
             int chosen = Graphics::getChosenMenuOption(state.pause_menu);
 
-            if (chosen == 0) state.scene = Game::Scene::Game;
-            else if (chosen == 1) state.scene = Game::Scene::MainMenu;
+            if (chosen == 0) state.scene = Game::Scene::Game, Sound::playMusic();
+            else if (chosen == 1) state.scene = Game::Scene::MainMenu, Sound::startMusic(1);
         }
 
         
