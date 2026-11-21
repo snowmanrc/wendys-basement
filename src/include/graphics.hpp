@@ -37,4 +37,6 @@ namespace Graphics {
     Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg);
     void showMenu(sf::RenderWindow& window, Menu& menu);
     int getChosenMenuOption(Menu& menu);
+    void selectMenuOption(Menu& menu, int option);
+    void markChosenMenuOption(Menu& menu);
 }

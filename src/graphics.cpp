@@ -123,9 +123,10 @@ namespace Graphics {
         static bool font_loaded = false;
 
         if (!font_loaded) {
-            if (!font.openFromFile("assets/Creepster-Regular.ttf")) {
+            if (!font.openFromFile("assets/silkscreen-regular.ttf")) {
                 DEBUG("Failed to load font");
-            }
+                exit(1);
+            }   
             font_loaded = true;
         }
 
@@ -144,7 +145,7 @@ namespace Graphics {
 
         
         // craeting menu title
-        sf::Text title_text(font, menu.title, 64);
+        sf::Text title_text(font, menu.title, 128);
 
         title_text.setFillColor(sf::Color(160, 0, 24));
         // setting title color blood red(to make it make more creepy) these three numbers show intensity of color RGB 
@@ -159,26 +160,26 @@ namespace Graphics {
     
         // placing a title at horizental center
         title_text.setPosition({ 960.f, 250.f });
-        // 360 means half of width which is 720 and 120 means add 120 pixeils from verticle top(which is zero) in total height is 600
     
         //creating first button
-        sf::RectangleShape button1({ 500.f, 120.f });
+        sf::RectangleShape button1({ 500.f, 60.f });
+        button1.setFillColor(sf::Color(0,0,0));
         button1.setPosition({ 710.f, 480.f });
-        button1.setOutlineThickness(2.f);
-        button1.setOutlineColor(sf::Color(160, 0, 24));
+        button1.setOutlineThickness(6.f);
+        button1.setOutlineColor(menu.selected == 0 ? sf::Color(214, 208, 194): sf::Color(160, 0, 24));
     
         // creating second button same like first just changing vertical position of button
-        sf::RectangleShape button2({ 500.f, 120.f });
-        button2.setPosition({ 710.f, 640.f });
-        button2.setOutlineThickness(2.f);
-        button2.setOutlineColor(sf::Color(160, 0, 24));
+        sf::RectangleShape button2({ 500.f, 60.f });
+        button2.setFillColor(sf::Color(0,0,0));
+        button2.setPosition({ 710.f, 580.f });
+        button2.setOutlineThickness(6.f);
+        button2.setOutlineColor(menu.selected == 1 ? sf::Color(214, 208, 194): sf::Color(160, 0, 24));
     
         //creating  button text
-        sf::Text text1(font, menu.option1, 24);
-        sf::Text text2(font, menu.option2, 24);
+        sf::Text text1(font, menu.option1, 32);
+        sf::Text text2(font, menu.option2, 32);
 
         
-    
         text1.setFillColor(sf::Color(214, 208, 194)); 
         // chosing old bane white color(because it looks more creepy)
         text2.setFillColor(sf::Color(214, 208, 194));
@@ -201,8 +202,8 @@ namespace Graphics {
             bounds2.position.y + bounds2.size.y / 2.f
         });
 
-        text1.setPosition({ 960.f, 540.f });
-        text2.setPosition({ 960.f, 700.f });
+        text1.setPosition({ 960.f, 510.f });
+        text2.setPosition({ 960.f, 610.f });
     
     
         // setting background according to window size
@@ -223,8 +224,15 @@ namespace Graphics {
             menu.chosen = false;
             return selected;
         } else {
-            return 0;
+            return -1;
         }
     }
     
+    void selectMenuOption(Menu& menu, int option) {
+        menu.selected = option % 2;
+    }
+
+    void markChosenMenuOption(Menu& menu) {
+        menu.chosen = true;
+    }
 }
