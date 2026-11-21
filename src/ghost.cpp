@@ -83,26 +83,25 @@ namespace Ghost {
 
         float dist = (player.position - ghost.position).length();
 
-        if (player.hidden) {
+        if (player.hidden && dist > 600) {
+            DEBUG("GHOST: wandering");
             ghost.mode = WalkingMode::Wandering;
-        }
-
-        // so even if the player is hidden, the ghost will still catch the player because the ghost was close
-        if (dist < 600) {
+        } 
+        else if (dist < 600) {
+            DEBUG("GHOST: chasing");
             ghost.mode = WalkingMode::Chasing;
         }
 
         DEBUG("GHOST: Player Distance: %f", dist);
         
         if (ghost.mode == WalkingMode::Chasing) {
-            DEBUG("GHOST: Chasing Player");
+            
             sf::Vector2i player_tile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
             Ghost::follow(ghost, player_tile); 
         }
         else {
 
             if (!ghost.path.empty()) return;
-            DEBUG("GHOST: Wandering");
 
             auto target = Map::ghost_idle_spots[Utils::random() % Map::ghost_idle_spots.size()];
             Ghost::follow(ghost, target);
@@ -127,7 +126,10 @@ namespace Ghost {
         float dist = diff.length() - ghost.size - player.size;
         
         // pixels
-        if (dist < 50) return true;
+        if (dist < 50) {
+            DEBUG("GHOST: Player caught!!");
+            return true;
+        }
         return false;
     };
 
