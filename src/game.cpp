@@ -94,9 +94,9 @@ namespace Game {
                 if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
                     auto& menu = state.scene == Game::Scene::MainMenu ? state.main_menu: state.pause_menu;
 
-                    if (key->code == sf::Keyboard::Key::Num1) menu.selected = 1;
-                    if (key->code == sf::Keyboard::Key::Num2) menu.selected = 2;
-                    if (key->code == sf::Keyboard::Key::Enter) menu.chosen = true;
+                    if (key->code == sf::Keyboard::Key::Num1) Graphics::selectMenuOption(menu, 0);
+                    if (key->code == sf::Keyboard::Key::Num2) Graphics::selectMenuOption(menu, 1);
+                    if (key->code == sf::Keyboard::Key::Enter) Graphics::markChosenMenuOption(menu);
                 }
             }
         }
@@ -149,8 +149,8 @@ namespace Game {
             Graphics::showMenu(state.window, state.main_menu);
             int chosen = Graphics::getChosenMenuOption(state.main_menu);
 
-            if (chosen == 1) Game::start(state);
-            else if (chosen == 2) state.running = false;
+            if (chosen == 0) Game::start(state);
+            else if (chosen == 1) state.running = false;
         }
         else if (state.scene == Game::Scene::PauseMenu) {
             state.camera.setCenter({ 960, 540 });
@@ -159,8 +159,8 @@ namespace Game {
             Graphics::showMenu(state.window, state.pause_menu);
             int chosen = Graphics::getChosenMenuOption(state.pause_menu);
 
-            if (chosen == 1) state.scene = Game::Scene::Game;
-            else if (chosen == 2) state.scene = Game::Scene::MainMenu;
+            if (chosen == 0) state.scene = Game::Scene::Game;
+            else if (chosen == 1) state.scene = Game::Scene::MainMenu;
         }
 
         
