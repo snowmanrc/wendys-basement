@@ -15,12 +15,14 @@ namespace Player {
         sf::Vector2f position;
         float size;
         float speed;
+        bool hidden;
 
         Entity() = default;
         Entity(sf::Vector2f p):
-        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED) {}
+        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false) {}
     };
 
     void updatePosition(Entity& player, float dt);
     bool hasCollided(Entity& player);
+    void tryHiding(Entity& player);
 }

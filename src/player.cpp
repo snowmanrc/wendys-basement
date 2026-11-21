@@ -92,5 +92,16 @@ namespace Player {
 		return false;
     }
 
+	void tryHiding(Entity& player) {
+		// checks if the player is currently next to any crate tile
+		// crate tiles are Map::crate_slots
+		// player tile can be found using Utils::cartesianToTiledVector(player.position, Map::tilesize)
+		// if the player is next to the crate tile, hide the player
+		// if the player is already hidden, unhide him and early exit.
 
+		if (player.hidden) {
+			player.hidden = false;
+			return;
+		}
+	}
 }
