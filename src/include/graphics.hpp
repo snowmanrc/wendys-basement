@@ -24,7 +24,7 @@ namespace Graphics {
 
     void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player);
 
-    void drawHUD(sf::RenderWindow& window, std::map<std::string, int> info);
+    void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count);
 
     struct Menu {
         std::string title;

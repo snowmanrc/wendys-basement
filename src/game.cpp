@@ -92,9 +92,11 @@ namespace Game {
             }
 
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
+
                 if (key->code == sf::Keyboard::Key::Escape) {
                     if (state.scene == Game::Scene::Game) state.scene = Scene::PauseMenu, Sound::pauseMusic();
                 }
+
 
                 if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
                     auto& menu = state.scene == Game::Scene::MainMenu ? state.main_menu: state.pause_menu;
@@ -102,6 +104,13 @@ namespace Game {
                     if (key->code == sf::Keyboard::Key::Num1) Graphics::selectMenuOption(menu, 0);
                     if (key->code == sf::Keyboard::Key::Num2) Graphics::selectMenuOption(menu, 1);
                     if (key->code == sf::Keyboard::Key::Enter) Graphics::markChosenMenuOption(menu);
+                }
+            }
+
+            if (const auto key = event->getIf<sf::Event::KeyReleased>()) {
+
+                if (key->code == sf::Keyboard::Key::E) {
+                    Player::tryHiding(state.player);
                 }
             }
         }
@@ -146,6 +155,12 @@ namespace Game {
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
             Graphics::drawOverlay(state.window, state.camera, state.player);
+
+            std::string texts[] = {"Stamina", "Keys Left"};
+            int values[] = {100, 5};
+            int count = sizeof(values)/sizeof(values[0]);
+
+            Graphics::drawHUD(state.window, texts, values, count);
         }
         else if (state.scene == Game::Scene::MainMenu) {
             state.camera.setCenter({ 960, 540 });

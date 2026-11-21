@@ -124,13 +124,13 @@ namespace Graphics {
         window.draw(sprite, states);  
     }
 
-    void drawHUD(sf::RenderWindow& window, std::map<std::string, int> info) {
+    void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count) {
         // at the top right corner, draw:
         // VALUE: 5
 
-        for (auto pair: info) {
-            std::string text = pair.first;
-            int num = pair.second;
+        for (int i = 0; i < count; i++) {
+            std::string text = texts[i];
+            int num = values[i];
 
             // logic here
         }
