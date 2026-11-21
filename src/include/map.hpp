@@ -9,12 +9,14 @@ namespace Map {
     const int width = 100;
     const int height = 100;
     const float tilesize = 64;
+    const int keycount = 5;
 
     extern std::vector<sf::Vector2i> key_slots;
+    extern std::vector<sf::Vector2i> crate_slots;
     extern std::vector<sf::Vector2i> ghost_idle_spots;
     extern sf::Vector2i player_spawn_pos;
 
     extern int grid[width][height];
 
-    void load(std::string filepath);
+    bool load(std::string filepath);
 }

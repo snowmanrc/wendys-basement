@@ -45,7 +45,12 @@ namespace Game {
         state.window.setFramerateLimit(120);
         state.camera.setSize({1920, 1080});
 
-        Map::load("assets/map.png");
+        bool loaded = Map::load("assets/map.png");
+
+        if (!loaded) {
+            DEBUG("GAME: ERROR: Failed to load map, cannot start game!");
+            exit(1);
+        }
 
         DEBUG("GAME: Initialized game state.");
 
@@ -89,24 +94,9 @@ namespace Game {
                 if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
                     auto& menu = state.scene == Game::Scene::MainMenu ? state.main_menu: state.pause_menu;
 
-<<<<<<< HEAD
-                    // checking user choose  main menu
-                    if (choice == 2)
-                    {
-                        if (state.window.isOpen())
-                        {
-                            state.running = false;
-                        }
-                        else
-                        {         
-                            Game::end(state);
-                        }
-                    }
-=======
                     if (key->code == sf::Keyboard::Key::Num1) menu.selected = 1;
                     if (key->code == sf::Keyboard::Key::Num2) menu.selected = 2;
                     if (key->code == sf::Keyboard::Key::Enter) menu.chosen = true;
->>>>>>> 78c3be541839c752169d7f1cdacae108ec65e7ae
                 }
             }
         }

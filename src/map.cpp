@@ -1,5 +1,6 @@
 #include "include/map.hpp"
 #include "include/debug.hpp"
+#include <SFML/Graphics/Color.hpp>
 #include <iostream>
 #include<SFML/Graphics/Image.hpp>
 
@@ -12,14 +13,13 @@ namespace Map {
 
     int grid[width][height] = {};
 
-    void load(std::string filepath) {
+    bool load(std::string filepath) {
 
         sf::Image image;
         
-        if (!image.loadFromFile(filepath))
-        {
+        if (!image.loadFromFile(filepath)) {
             DEBUG("Image could not be loaded!");
-            return;
+            return false;
         }
 
 		sf::Vector2u size = image.getSize();
@@ -29,15 +29,19 @@ namespace Map {
 
 				sf::Color pixel = image.getPixel( { (unsigned int) j, (unsigned int) i});
                 
-                if (pixel == sf::Color::White)
-                {
-                    grid[i][j] = 0;
-                }
-                else if (pixel == sf::Color::Black)
-                {
+                if (pixel == sf::Color::Black) {
                     grid[i][j] = 1;
+                    continue;
+                }
+
+                grid[i][j] = 0;
+
+                if (pixel == sf::Color::Yellow) {
+                    // logic here
 				}
             }
         }   
+
+        return true;
     }
 }
