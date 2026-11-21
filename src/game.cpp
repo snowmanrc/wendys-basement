@@ -63,14 +63,29 @@ namespace Game {
 
     void start(State& state) {
 
-        state.scene = Game::Scene::Game;
-
         state.player = Player::Entity({1200, 880});
         state.ghost = Ghost::Entity({100, 400});
 
         Sound::startMusic(0);
+        Sound::pauseMusic();
 
-        DEBUG("GAME: Starting game, switched to Game scene.");
+        DEBUG("GAME: Game startup complete");
+    }
+
+
+    void changeScene(State& state, Scene scene) {
+        
+        state.scene = scene;
+
+        if (scene == Game::Scene::Playing) {
+            Sound::playMusic();
+        }
+        else if (scene == Game::Scene::PauseMenu) {
+            Sound::pauseMusic();
+        }
+        else if (scene == Game::Scene::MainMenu) {
+            Sound::startMusic(1);
+        }
     }
 
     void close(State& state) {
@@ -94,7 +109,7 @@ namespace Game {
             if (const auto key = event->getIf<sf::Event::KeyPressed>()) {
 
                 if (key->code == sf::Keyboard::Key::Escape) {
-                    if (state.scene == Game::Scene::Game) state.scene = Scene::PauseMenu, Sound::pauseMusic();
+                    if (state.scene == Game::Scene::Playing) Game::changeScene(state, Scene::PauseMenu);
                 }
 
 
@@ -120,11 +135,10 @@ namespace Game {
 
         state.dt = state.clock.restart().asSeconds();
 
-        if (state.scene != Game::Scene::Game) return;
+        if (state.scene != Game::Scene::Playing) return;
 
         Player::updatePosition(state.player, state.dt);       
         
-
         static sf::Clock path_finding_clock;
         sf::Time elapsed = path_finding_clock.getElapsedTime();
 
@@ -136,7 +150,9 @@ namespace Game {
         
         Ghost::updatePosition(state.ghost, state.dt);
 
-        if (Ghost::hasCaughtPlayer(state.ghost, state.player)) state.scene = Game::Scene::MainMenu;
+        if (Ghost::hasCaughtPlayer(state.ghost, state.player)) {
+            Game::changeScene(state, Scene::MainMenu);
+        }
     }
 
 
@@ -144,14 +160,14 @@ namespace Game {
 
         state.window.clear();
 
-        if (state.scene == Game::Scene::Game) {
+        if (state.scene == Game::Scene::Playing) {
             state.camera.setCenter(state.player.position);
             state.window.setView(state.camera);
 
             Graphics::drawMap(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
-            //Graphics::drawOverlay(state.window, state.camera, state.player);
+            Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Keys Left"};
             int values[] = {100, 5};
@@ -165,8 +181,13 @@ namespace Game {
             Graphics::showMenu(state.window, state.main_menu);
             int chosen = Graphics::getChosenMenuOption(state.main_menu);
 
-            if (chosen == 0) Game::start(state);
-            else if (chosen == 1) state.running = false;
+            if (chosen == 0) {
+                Game::start(state);
+                Game::changeScene(state, Scene::Playing);
+            }
+            else if (chosen == 1) {
+                state.running = false;
+            }
         }
         else if (state.scene == Game::Scene::PauseMenu) {
             state.camera.setCenter({ 960, 540 });
@@ -175,8 +196,12 @@ namespace Game {
             Graphics::showMenu(state.window, state.pause_menu);
             int chosen = Graphics::getChosenMenuOption(state.pause_menu);
 
-            if (chosen == 0) state.scene = Game::Scene::Game, Sound::playMusic();
-            else if (chosen == 1) state.scene = Game::Scene::MainMenu, Sound::startMusic(1);
+            if (chosen == 0) {
+                Game::changeScene(state, Scene::Playing);
+            }
+            else if (chosen == 1) {
+                Game::changeScene(state, Scene::MainMenu);
+            }
         }
 
         

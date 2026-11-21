@@ -14,7 +14,7 @@ namespace Game {
     enum class Scene {
         MainMenu,
         PauseMenu,
-        Game
+        Playing
     };
 
     struct State {
@@ -36,8 +36,11 @@ namespace Game {
     // Closes the game
     void close(State& state);
 
-    // Starts the Game
+    // Starts a game scene
     void start(State& state);
+
+    // Sets up the game scene
+    void changeScene(State& state, Scene scene);
 
     // Updates the game state
     void update(State& state);
