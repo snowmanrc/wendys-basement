@@ -124,16 +124,49 @@ namespace Graphics {
         window.draw(sprite, states);  
     }
 
-    void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count) {
-        // at the top right corner, draw:
-        // VALUE: 5
+    void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count) 
+    {
+		static sf::Font font;
+		static bool font_loaded = false;
 
-        for (int i = 0; i < count; i++) {
+        if (!font_loaded)
+        {
+            if (!font.openFromFile("assets/silkscreen-regular.ttf"))
+            {
+                DEBUG("Failed to load HUD font");
+
+                return;
+            }
+
+            font_loaded = true;
+
+
+        }
+
+        sf::View oldView = window.getView();
+        auto windowSize = window.getSize();
+
+		//creating view according to window size to make HUD at fixed position
+        sf::View hudView(sf::FloatRect({ 0.f, 0.f }, { static_cast<float>(windowSize.x), static_cast<float>(windowSize.y) }));
+        window.setView(hudView);
+
+        for (int i = 0; i < count; i++)
+        {
             std::string text = texts[i];
             int num = values[i];
 
-            // logic here
+            sf::Text hudText(font, text + ": " + std::to_string(num), 32);
+            hudText.setFillColor(sf::Color(214, 208, 194));
+
+            // setting the position  ogf the text with each next line 45 pixel lower
+            float textWidth = hudText.getLocalBounds().size.x; // taking actual width of text
+            hudText.setPosition({ static_cast<float>(windowSize.x) - textWidth- 30.f, 30.f + i * 45.f });
+
+            window.draw(hudText);
         }
+        //Restoring the game camera view
+        window.setView(oldView);
+
     }
 
     void drawProps(sf::RenderWindow& window) {

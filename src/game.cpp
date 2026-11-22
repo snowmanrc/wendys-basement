@@ -177,9 +177,10 @@ namespace Game {
             Graphics::drawPlayer(state.window, state.player);
             Graphics::drawOverlay(state.window, state.camera, state.player);
 
-            std::string texts[] = {"Stamina", "Keys Left"};
-            int values[] = {100, static_cast<int>(state.player.crosses_found)};
+            std::string texts[] = {"Stamina", "Crosses Left"};
+            int values[] = {100,Map::crosscount - static_cast<int>(state.player.crosses_found)};
             int count = sizeof(values)/sizeof(values[0]);
+
 
             Graphics::drawHUD(state.window, texts, values, count);
         }
