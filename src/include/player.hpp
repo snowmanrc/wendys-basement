@@ -9,6 +9,7 @@ namespace Player {
     const float RUNNING_SPEED = 900;
 
     const float SIZE = 24;
+    const unsigned int MAX_STAMINA = 1000;
 
     struct Entity {
         sf::CircleShape shape;
@@ -17,10 +18,11 @@ namespace Player {
         float speed;
         bool hidden;
         unsigned int crosses_found;
+        unsigned int stamina;
 
         Entity() = default;
         Entity(sf::Vector2f p):
-        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false), crosses_found(0) {}
+        shape(sf::CircleShape(SIZE)), position(p), size(SIZE), speed(WALKING_SPEED), hidden(false), crosses_found(0), stamina(MAX_STAMINA) {}
     };
 
     void updatePosition(Entity& player, float dt);
