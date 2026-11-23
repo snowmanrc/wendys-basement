@@ -1,3 +1,4 @@
+#include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
@@ -12,17 +13,8 @@ namespace Player {
 
 	void updatePosition(Entity &player, float dt) {
 
-		if (player.hidden) return;
-
-		sf::Vector2f direction{0,0};
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) direction.y -= 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) direction.x -= 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) direction.y += 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) direction.x += 1;
-
 		bool shift_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
-
+		
 		player.speed = Player::WALKING_SPEED;
 
 		if (shift_pressed && player.stamina > 0) {
@@ -31,6 +23,16 @@ namespace Player {
 		} else if (!shift_pressed && player.stamina < Player::MAX_STAMINA) {
 			player.stamina += 1;
 		}
+
+		if (player.hidden) return;
+
+		sf::Vector2f direction{0,0};
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) direction.y -= 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) direction.x -= 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) direction.y += 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) direction.x += 1;
+	
 
 		// early return so we don't have to do any computation when the player is not moving
 		if (direction.x == 0 && direction.y == 0) return;
@@ -97,11 +99,8 @@ namespace Player {
     }
 
 
+	void tryHiding(Entity & player) {
 
-
-
-		void tryHiding(Entity & player) {
-		// 1. If already hidden, unhide and exit early
 		if (player.hidden) {
 			player.hidden = false;
 			DEBUG("PLAYER: Unhidden");
@@ -109,16 +108,19 @@ namespace Player {
 		}
 
 		// 2. Get the player's current grid tile
-		auto playerTile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
+		auto player_tile = Utils::cartesianToTiledVector(
+			player.position + sf::Vector2f(player.size, player.size), 
+			Map::tilesize
+		);
 
 		// 3. Check if any crate tile is adjacent (including diagonals)
-		for (const auto& crateTile : Map::crate_slots) {
-			int dx = std::abs(playerTile.x - crateTile.x);
-			int dy = std::abs(playerTile.y - crateTile.y);
+		for (const auto& crate_tile : Map::crate_slots) {
+			int dx = std::abs(player_tile.x - crate_tile.x);
+			int dy = std::abs(player_tile.y - crate_tile.y);
 
 			if (dx <= 1 && dy <= 1) {
 				player.hidden = true;
-				DEBUG("PLAYER: Hidden near crate at Tiled(%d, %d)", crateTile.x, crateTile.y);
+				DEBUG("PLAYER: Hidden near crate at Tiled(%d, %d)", crate_tile.x, crate_tile.y);
 				return;
 			}
 		}
