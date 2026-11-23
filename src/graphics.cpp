@@ -182,10 +182,16 @@ namespace Graphics {
 
         for (unsigned int i = 0; i < Map::crate_slots.size(); i++) {
             auto tile = Map::crate_slots[i];
-            sf::RectangleShape shape({Map::tilesize, Map::tilesize});
-            shape.setFillColor(sf::Color::Green);
-            shape.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
-            window.draw(shape);
+            auto texture = Graphics::getTexture("assets/crate.png");
+            sf::Sprite sprite(texture);
+            sprite.setScale(
+                {
+                    (float) Map::tilesize / texture.getSize().x, 
+                    (float) Map::tilesize / texture.getSize().y
+                }
+            );
+            sprite.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
+            window.draw(sprite);
         }
     }
 
