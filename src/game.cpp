@@ -1,4 +1,3 @@
-
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -27,8 +26,10 @@ namespace Game {
 
     State init() {
 
-        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/menu_background.png");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.png");
         auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu", "assets/pause_background.png");
+        auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/pause_background.png");
+        auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/pause_background.png");
 
         State state = {
             sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
@@ -39,6 +40,9 @@ namespace Game {
             {},
             main_menu,
             pause_menu,
+            win_menu,
+            lose_menu,
+            nullptr,
             true,
             0
         };
@@ -79,12 +83,23 @@ namespace Game {
 
         if (scene == Game::Scene::Playing) {
             Sound::playMusic();
+            state.current_menu = nullptr;
         }
         else if (scene == Game::Scene::PauseMenu) {
             Sound::pauseMusic();
+            state.current_menu = &state.pause_menu;
         }
         else if (scene == Game::Scene::MainMenu) {
             Sound::startMusic(1);
+            state.current_menu = &state.main_menu;
+        }
+        else if (scene == Game::Scene::Win) {
+            Sound::startMusic(1);
+            state.current_menu = &state.win_menu;
+        }
+        else if (scene == Game::Scene::Lose) {
+            Sound::startMusic(1);
+            state.current_menu = &state.lose_menu;
         }
     }
 
@@ -113,8 +128,8 @@ namespace Game {
                 }
 
 
-                if (state.scene == Scene::MainMenu || state.scene == Scene::PauseMenu) {
-                    auto& menu = state.scene == Game::Scene::MainMenu ? state.main_menu: state.pause_menu;
+                if (state.current_menu != nullptr) {
+                    auto& menu = *state.current_menu;
 
                     if (key->code == sf::Keyboard::Key::Num1) Graphics::selectMenuOption(menu, 0);
                     if (key->code == sf::Keyboard::Key::Num2) Graphics::selectMenuOption(menu, 1);
@@ -143,7 +158,7 @@ namespace Game {
         if (Player::hasWon(state.player)) {
             DEBUG("GAME: Player has won");
             // win condition
-            exit(0);
+            Game::changeScene(state, Scene::Win);
         }
         
         static sf::Clock path_finding_clock;
@@ -158,7 +173,8 @@ namespace Game {
         Ghost::updatePosition(state.ghost, state.dt);
 
         if (Ghost::hasCaughtPlayer(state.ghost, state.player)) {
-            Game::changeScene(state, Scene::MainMenu);
+            DEBUG("GAME: Player has lost");
+            Game::changeScene(state, Scene::Lose);
         }
     }
 
@@ -209,6 +225,36 @@ namespace Game {
             int chosen = Graphics::getChosenMenuOption(state.pause_menu);
 
             if (chosen == 0) {
+                Game::changeScene(state, Scene::Playing);
+            }
+            else if (chosen == 1) {
+                Game::changeScene(state, Scene::MainMenu);
+            }
+        }
+        else if (state.scene == Game::Scene::Win) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
+
+            Graphics::showMenu(state.window, state.win_menu);
+            int chosen = Graphics::getChosenMenuOption(state.win_menu);
+
+            if (chosen == 0) {
+                Game::start(state);
+                Game::changeScene(state, Scene::Playing);
+            }
+            else if (chosen == 1) {
+                Game::changeScene(state, Scene::MainMenu);
+            }
+        }
+        else if (state.scene == Game::Scene::Lose) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
+
+            Graphics::showMenu(state.window, state.lose_menu);
+            int chosen = Graphics::getChosenMenuOption(state.lose_menu);
+
+            if (chosen == 0) {
+                Game::start(state);
                 Game::changeScene(state, Scene::Playing);
             }
             else if (chosen == 1) {

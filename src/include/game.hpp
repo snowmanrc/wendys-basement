@@ -14,7 +14,9 @@ namespace Game {
     enum class Scene {
         MainMenu,
         PauseMenu,
-        Playing
+        Playing,
+        Win,
+        Lose
     };
 
     struct State {
@@ -26,6 +28,9 @@ namespace Game {
         Ghost::Entity  ghost;
         Graphics::Menu main_menu;
         Graphics::Menu pause_menu;
+        Graphics::Menu win_menu;
+        Graphics::Menu lose_menu;
+        Graphics::Menu* current_menu;
         bool running;
         float dt;
     };

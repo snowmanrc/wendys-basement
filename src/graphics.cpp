@@ -80,7 +80,7 @@ namespace Graphics {
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player) {
 
         if (player.hidden) return;
-        
+
         auto texture = Graphics::getTexture("assets/player.png");
         auto sprite = sf::Sprite(texture);
         sprite.setScale({
