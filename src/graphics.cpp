@@ -173,10 +173,11 @@ namespace Graphics {
 
         for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
             auto tile = Map::cross_slots[i];
-            sf::RectangleShape shape({Map::tilesize, Map::tilesize});
-            shape.setFillColor(sf::Color::Blue);
-            shape.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
-            window.draw(shape);
+            auto texture = Graphics::getTexture("assets/cross.png");
+            sf::Sprite sprite(texture);
+            sprite.setScale({3.5,3.5});
+            sprite.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
+            window.draw(sprite);
         }
 
         for (unsigned int i = 0; i < Map::crate_slots.size(); i++) {
