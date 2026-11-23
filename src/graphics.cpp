@@ -159,8 +159,7 @@ namespace Graphics {
             hudText.setFillColor(sf::Color(214, 208, 194));
 
             // setting the position  ogf the text with each next line 45 pixel lower
-            float textWidth = hudText.getLocalBounds().size.x; // taking actual width of text
-            hudText.setPosition({ static_cast<float>(windowSize.x) - textWidth- 30.f, 30.f + i * 45.f });
+            hudText.setPosition({  30.f, 30.f + i * 45.f });
 
             window.draw(hudText);
         }
