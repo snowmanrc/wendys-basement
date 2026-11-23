@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
@@ -123,7 +124,9 @@ namespace Graphics {
                 (float) camera.getSize().y / texture.getSize().y
             }
         );
-        sprite.setPosition(player.position - sf::Vector2f(camera.getSize().x/2.0f, camera.getSize().y/2.0f));
+        sprite.setPosition(
+            player.position + sf::Vector2f(player.size, player.size) - sf::Vector2f(camera.getSize().x/2.0f, camera.getSize().y/2.0f)
+        );
         window.draw(sprite, states);  
     }
 

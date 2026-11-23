@@ -185,7 +185,7 @@ namespace Game {
         state.window.clear();
 
         if (state.scene == Game::Scene::Playing) {
-            state.camera.setCenter(state.player.position);
+            state.camera.setCenter(state.player.position + sf::Vector2f(state.player.size, state.player.size));
             state.window.setView(state.camera);
 
             Graphics::drawMap(state.window);
