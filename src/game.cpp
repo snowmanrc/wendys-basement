@@ -10,6 +10,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <iostream>
 #include <type_traits>
 
 #include "include/game.hpp"
@@ -26,10 +27,10 @@ namespace Game {
 
     State init() {
 
-        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.png");
-        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu","assets/bg.png");
-        auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/bg.png");
-        auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/bg.png");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.jpg");
+        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu","assets/bg.jpg");
+        auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/bg.jpg");
+        auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/bg.jpg");
 
         State state = {
             sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
