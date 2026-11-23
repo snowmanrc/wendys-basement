@@ -25,11 +25,15 @@ namespace Player {
 
 		sf::Vector2f direction{0,0};
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) direction.y -= 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) direction.x -= 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) direction.y += 1;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) direction.x += 1;
-	
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) 
+			direction.y -= 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) 
+			direction.x -= 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) 
+			direction.y += 1;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) 
+			direction.x += 1;
+		// directions handled
 
 		// early return so we don't have to do any computation when the player is not moving
 		if (direction.x == 0 && direction.y == 0) return;
