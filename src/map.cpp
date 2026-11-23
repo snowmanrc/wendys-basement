@@ -16,6 +16,7 @@ namespace Map {
 	std::vector<sf::Vector2i> crate_slots;
     std::vector<sf::Vector2i> all_cross_slots;
     sf::Vector2i player_spawn_pos;
+    sf::Vector2i ghost_spawn_pos;
 
     int grid[width][height] = {};
 
@@ -81,6 +82,8 @@ namespace Map {
             std::swap(all_cross_slots[i], all_cross_slots[randomIndex]);
         }
 
+        Map::ghost_spawn_pos = Map::ghost_idle_spots[Utils::random() % Map::ghost_idle_spots.size()];
+         
         return true;
     }
 }

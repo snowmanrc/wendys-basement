@@ -15,6 +15,7 @@ namespace Map {
     extern std::vector<sf::Vector2i> crate_slots;
     extern std::vector<sf::Vector2i> ghost_idle_spots;
     extern sf::Vector2i player_spawn_pos;
+    extern sf::Vector2i ghost_spawn_pos;
 
     extern int grid[width][height];
 

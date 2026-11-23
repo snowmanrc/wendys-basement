@@ -68,8 +68,8 @@ namespace Game {
             exit(1);
         }
 
-        state.player = Player::Entity({1200, 880});
-        state.ghost = Ghost::Entity({100, 400});
+        state.player = Player::Entity(Utils::tiledToCartesianVectorCentered(Map::player_spawn_pos, Map::tilesize));
+        state.ghost = Ghost::Entity(Utils::tiledToCartesianVectorCentered(Map::ghost_spawn_pos, Map::tilesize));
 
         Sound::startMusic(0);
         Sound::pauseMusic();
