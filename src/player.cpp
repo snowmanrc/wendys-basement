@@ -19,13 +19,15 @@ namespace Player {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) direction.y += 1;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) direction.x += 1;
 
-		if (
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || 
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift)
-		) {
+		bool shift_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
+
+		player.speed = Player::WALKING_SPEED;
+
+		if (shift_pressed && player.stamina > 0) {
 			player.speed = Player::RUNNING_SPEED;
-		} else {
-			player.speed = Player::WALKING_SPEED;
+			player.stamina -= 1;
+		} else if (!shift_pressed && player.stamina < Player::MAX_STAMINA) {
+			player.stamina += 1;
 		}
 
 		// early return so we don't have to do any computation when the player is not moving

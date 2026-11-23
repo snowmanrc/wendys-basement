@@ -178,7 +178,10 @@ namespace Game {
             Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Crosses Left"};
-            int values[] = {100,Map::crosscount - static_cast<int>(state.player.crosses_found)};
+            int values[] = {
+                static_cast<int>(state.player.stamina / (float) Player::MAX_STAMINA * 100),
+                Map::crosscount - static_cast<int>(state.player.crosses_found)
+            };
             int count = sizeof(values)/sizeof(values[0]);
 
 
