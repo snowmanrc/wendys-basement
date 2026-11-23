@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <cmath>
 #include <SFML/Window/Keyboard.hpp>
 
 #include "include/debug.hpp"
@@ -92,18 +92,39 @@ namespace Player {
 		return false;
     }
 
-	void tryHiding(Entity& player) {
-		// checks if the player is currently next to any crate tile
-		// crate tiles are Map::crate_slots
-		// player tile can be found using Utils::cartesianToTiledVector(player.position, Map::tilesize)
-		// if the player is next to the crate tile, hide the player
-		// if the player is already hidden, unhide him and early exit.
 
+
+
+
+		void tryHiding(Entity & player) {
+		// 1. If already hidden, unhide and exit early
 		if (player.hidden) {
 			player.hidden = false;
+			DEBUG("PLAYER: Unhidden");
 			return;
 		}
+
+		// 2. Get the player's current grid tile
+		auto playerTile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
+
+		// 3. Check if any crate tile is adjacent (including diagonals)
+		for (const auto& crateTile : Map::crate_slots) {
+			int dx = std::abs(playerTile.x - crateTile.x);
+			int dy = std::abs(playerTile.y - crateTile.y);
+
+			if (dx <= 1 && dy <= 1) {
+				player.hidden = true;
+				DEBUG("PLAYER: Hidden near crate at Tiled(%d, %d)", crateTile.x, crateTile.y);
+				return;
+			}
+		}
+
+		DEBUG("PLAYER: Not next to any crate slot");
 	}
+
+
+
+
 
 	void tryCollectingCross(Entity& player) {
 
