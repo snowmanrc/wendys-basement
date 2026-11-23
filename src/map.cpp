@@ -48,15 +48,16 @@ namespace Map {
                 grid[i][j] = 0;
 
                 if (pixel == sf::Color::Yellow) {
-                   all_cross_slots.push_back(sf::Vector2i(j, i));
+                    all_cross_slots.push_back(sf::Vector2i(j, i));
 				}
                 else if (pixel == sf::Color::Blue)
                 {
-                  ghost_idle_spots.push_back(sf::Vector2i(j, i));
+                    ghost_idle_spots.push_back(sf::Vector2i(j, i));
                 }
                 else if (pixel == sf::Color::Magenta)
                 {
-                  crate_slots.push_back(sf::Vector2i(j, i));
+                    crate_slots.push_back(sf::Vector2i(j, i));
+                    grid[i][j] = 1;
                 }
                 else if (pixel == sf::Color::Green)
                 {

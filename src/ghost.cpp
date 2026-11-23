@@ -83,11 +83,11 @@ namespace Ghost {
 
         float dist = (player.position - ghost.position).length();
 
-        if (player.hidden && dist > 600) {
+        if ((player.hidden && dist > 100) || dist > 500) {
             DEBUG("GHOST: wandering");
             ghost.mode = WalkingMode::Wandering;
         } 
-        else if (dist < 600) {
+        else if (dist < 500) {
             DEBUG("GHOST: chasing");
             ghost.mode = WalkingMode::Chasing;
         }

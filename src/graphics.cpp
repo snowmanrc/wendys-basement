@@ -78,6 +78,9 @@ namespace Graphics {
 
 
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player) {
+
+        if (player.hidden) return;
+        
         auto texture = Graphics::getTexture("assets/player.png");
         auto sprite = sf::Sprite(texture);
         sprite.setScale({
@@ -159,8 +162,7 @@ namespace Graphics {
             hudText.setFillColor(sf::Color(214, 208, 194));
 
             // setting the position  ogf the text with each next line 45 pixel lower
-            float textWidth = hudText.getLocalBounds().size.x; // taking actual width of text
-            hudText.setPosition({ static_cast<float>(windowSize.x) - textWidth- 30.f, 30.f + i * 45.f });
+            hudText.setPosition({  30.f, 30.f + i * 45.f });
 
             window.draw(hudText);
         }
@@ -173,18 +175,25 @@ namespace Graphics {
 
         for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
             auto tile = Map::cross_slots[i];
-            sf::RectangleShape shape({Map::tilesize, Map::tilesize});
-            shape.setFillColor(sf::Color::Blue);
-            shape.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
-            window.draw(shape);
+            auto texture = Graphics::getTexture("assets/cross.png");
+            sf::Sprite sprite(texture);
+            sprite.setScale({3.5,3.5});
+            sprite.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
+            window.draw(sprite);
         }
 
         for (unsigned int i = 0; i < Map::crate_slots.size(); i++) {
             auto tile = Map::crate_slots[i];
-            sf::RectangleShape shape({Map::tilesize, Map::tilesize});
-            shape.setFillColor(sf::Color::Green);
-            shape.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
-            window.draw(shape);
+            auto texture = Graphics::getTexture("assets/crate.png");
+            sf::Sprite sprite(texture);
+            sprite.setScale(
+                {
+                    (float) Map::tilesize / texture.getSize().x, 
+                    (float) Map::tilesize / texture.getSize().y
+                }
+            );
+            sprite.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
+            window.draw(sprite);
         }
     }
 
