@@ -12,6 +12,8 @@ namespace Player {
 
 	void updatePosition(Entity &player, float dt) {
 
+		if (player.hidden) return;
+
 		sf::Vector2f direction{0,0};
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) direction.y -= 1;
