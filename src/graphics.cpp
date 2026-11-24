@@ -21,6 +21,7 @@
 #include "include/ghost.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
+#include "include/assets.hpp"
 #include "include/debug.hpp"
 #include "include/utils.hpp"
 

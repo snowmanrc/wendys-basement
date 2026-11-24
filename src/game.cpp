@@ -15,6 +15,7 @@
 #include <type_traits>
 
 #include "include/game.hpp"
+#include "include/assets.hpp"
 #include "include/debug.hpp"
 #include "include/error.hpp"
 #include "include/ghost.hpp"
@@ -61,12 +62,12 @@ namespace Game {
 
     void start(State& state) {
 
-        Map::load(Graphics::Assets::map_file);
+        Map::load(Assets::map_file);
 
         state.player = Player::Entity(Utils::tiledToCartesianVectorCentered(Map::player_spawn_pos, Map::tilesize));
         state.ghost = Ghost::Entity(Utils::tiledToCartesianVectorCentered(Map::ghost_spawn_pos, Map::tilesize));
 
-        Sound::startMusic(0);
+        Sound::startMusic(Sound::MusicType::Background);
         Sound::pauseMusic();
 
         DEBUG("GAME: Game startup complete");
@@ -86,15 +87,15 @@ namespace Game {
             state.current_menu = &state.pause_menu;
         }
         else if (scene == Game::Scene::MainMenu) {
-            Sound::startMusic(1);
+            Sound::startMusic(Sound::MusicType::Menu);
             state.current_menu = &state.main_menu;
         }
         else if (scene == Game::Scene::Win) {
-            Sound::startMusic(2);
+            Sound::startMusic(Sound::MusicType::Win);
             state.current_menu = &state.win_menu;
         }
         else if (scene == Game::Scene::Lose) {
-            Sound::startMusic(1);
+            Sound::startMusic(Sound::MusicType::Lose);
             state.current_menu = &state.lose_menu;
         }
     }
