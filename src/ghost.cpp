@@ -7,8 +7,10 @@
 #include <vector>
 
 #include "include/ghost.hpp"
+#include "include/assets.hpp"
 #include "include/debug.hpp"
 #include "include/map.hpp"
+#include "include/sound.hpp"
 #include "include/utils.hpp"
 
 
@@ -88,13 +90,19 @@ namespace Ghost {
 
         float dist = (player.position - ghost.position).length();
 
-        if ((player.hidden && dist > 80) || dist > 5000) {
+        bool should_wander = (player.hidden && dist > 50) || dist > 5000;
+        bool should_chase = !player.hidden && dist < 1000;
+
+        if (should_wander && ghost.mode != WalkingMode::Wandering) {
             DEBUG("GHOST: wandering");
             ghost.mode = WalkingMode::Wandering;
+            Sound::startMusic(Sound::MusicType::Background);
         } 
-        else if (dist < 1000) {
+        else if (should_chase && ghost.mode != WalkingMode::Chasing) {
             DEBUG("GHOST: chasing");
             ghost.mode = WalkingMode::Chasing;
+            Sound::playSound(Assets::terror_sound);
+            Sound::startMusic(Sound::MusicType::Chase);
         }
 
         DEBUG("GHOST: Player Distance: %f", dist);

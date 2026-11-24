@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 namespace Sound {
 
     enum class MusicType {
@@ -15,4 +16,6 @@ namespace Sound {
     void playMusic();
     void pauseMusic();
     void stopMusic();
+
+    void playSound(std::string filepath);
 }

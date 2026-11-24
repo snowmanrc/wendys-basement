@@ -4,8 +4,10 @@
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
 
+#include "include/assets.hpp"
 #include "include/debug.hpp"
 #include "include/map.hpp"
+#include "include/sound.hpp"
 #include "include/utils.hpp"
 #include "include/player.hpp"
 
@@ -118,6 +120,7 @@ namespace Player {
 
 		if (player.hidden) {
 			player.hidden = false;
+			Sound::playSound(Assets::crate_sound);
 			DEBUG("PLAYER: Unhidden");
 			return;
 		}
@@ -135,6 +138,7 @@ namespace Player {
 
 			if (dx <= 1 && dy <= 1) {
 				player.hidden = true;
+				Sound::playSound(Assets::crate_sound);
 				DEBUG("PLAYER: Hidden near crate at Tiled(%d, %d)", crate_tile.x, crate_tile.y);
 				return;
 			}
