@@ -203,7 +203,7 @@ namespace Graphics {
         }
     }
 
-    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg) {
+    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg, std::string o3 ) {
 
         sf::Texture texture; 
         bool bg_loaded = texture.loadFromFile(bg);
@@ -218,6 +218,7 @@ namespace Graphics {
             t,
             o1,
             o2,
+            o3,
             bg,
             0,
             false,
@@ -285,6 +286,29 @@ namespace Graphics {
         button2.setPosition({ 710.f, 580.f });
         button2.setOutlineThickness(6.f);
         button2.setOutlineColor(menu.selected == 1 ? sf::Color(214, 208, 194): sf::Color(160, 0, 24));
+
+        //creating third button for game guide just for main menu
+        if (menu.option3 != "") {
+            sf::RectangleShape button3({ 500.f, 60.f });
+            button3.setFillColor(sf::Color(0, 0, 0));
+            button3.setPosition({ 710.f, 680.f });
+            button3.setOutlineThickness(6.f);
+            button3.setOutlineColor(menu.selected == 2 ? sf::Color(214, 208, 194) : sf::Color(160, 0, 24));
+
+            sf::Text text3(font, menu.option3, 32);
+            text3.setFillColor(sf::Color(214, 208, 194));
+
+            sf::FloatRect bounds3 = text3.getLocalBounds();
+            text3.setOrigin({
+                bounds3.position.x + bounds3.size.x / 2.f,
+                bounds3.position.y + bounds3.size.y / 2.f
+                });
+
+            text3.setPosition({ 960.f, 710.f });
+
+            window.draw(button3);
+            window.draw(text3);
+        }
     
         //creating  button text
         sf::Text text1(font, menu.option1, 32);
@@ -327,6 +351,71 @@ namespace Graphics {
         window.draw(text2);
     }
 
+    void showGameGuide(sf::RenderWindow& window) {
+
+        static sf::Font font;
+        static bool font_loaded = false;
+
+        if (!font_loaded) {
+            if (!font.openFromFile("assets/silkscreen-regular.ttf")) {
+                DEBUG("Failed to load Game Guide font");
+                return;
+            }
+            font_loaded = true;
+        }
+
+        auto& texture = Graphics::getTexture("assets/bg.jpg");
+        sf::Sprite background(texture);
+
+        auto view_size = window.getView().getSize();
+        auto image_size = texture.getSize();
+
+        background.setScale({
+            view_size.x / static_cast<float>(image_size.x),
+            view_size.y / static_cast<float>(image_size.y)
+            });
+
+        window.draw(background);
+
+        sf::Text title(font, "HOW TO PLAY", 64);
+        title.setFillColor(sf::Color(160, 0, 24));
+
+        sf::FloatRect title_bounds = title.getLocalBounds();
+        title.setOrigin({
+            title_bounds.position.x + title_bounds.size.x / 2.f,
+            title_bounds.position.y + title_bounds.size.y / 2.f
+            });
+
+        title.setPosition({ 960.f, 250.f });
+
+        sf::Text instructions(font,
+            "Collect all 5 crosses\n"
+            "W - Move Up\n"
+            "A - Move Left\n"
+            "S - Move Down\n"
+            "D - Move Right\n"
+            "E - Hide inside a box",
+            32
+        );
+
+        instructions.setFillColor(sf::Color(214, 208, 194));
+        instructions.setPosition({ 600.f, 400.f });
+
+        sf::Text back_text(font, "Press ESC to return to Main Menu", 24);
+        back_text.setFillColor(sf::Color(214, 208, 194));
+
+        sf::FloatRect back_bounds = back_text.getLocalBounds();
+        back_text.setOrigin({
+            back_bounds.position.x + back_bounds.size.x / 2.f,
+            back_bounds.position.y + back_bounds.size.y / 2.f
+            });
+
+        back_text.setPosition({ 960.f, 900.f });
+
+        window.draw(title);
+        window.draw(instructions);
+        window.draw(back_text);
+    }
 
     int getChosenMenuOption(Menu& menu) {
         if (menu.chosen) {
@@ -340,7 +429,13 @@ namespace Graphics {
     }
     
     void selectMenuOption(Menu& menu, int option) {
-        menu.selected = option % 2;
+        if (menu.option3 != "") {
+            menu.selected = option % 3;
+        }
+        else {
+            menu.selected = option % 2;
+        }
+
     }
 
     void markChosenMenuOption(Menu& menu) {

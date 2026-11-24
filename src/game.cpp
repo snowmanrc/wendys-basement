@@ -28,7 +28,7 @@ namespace Game {
 
     void init(State& state) {
 
-        auto main_menu = Graphics::makeMenu("Wendy's Basement", "1. Play", "2. Quit", "assets/bg.jpg");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "1. Play", "2. Quit", "assets/bg.jpg", "3. Game Guide");
         auto pause_menu = Graphics::makeMenu("Paused", "1. Resume", "2. Back to Menu","assets/bg.jpg");
         auto win_menu = Graphics::makeMenu("You Won!", "1. Play Again", "2. Back to Menu", "assets/bg.jpg");
         auto lose_menu = Graphics::makeMenu("Game Over!", "1. Play Again", "2. Back to Menu", "assets/bg.jpg");
@@ -129,6 +129,8 @@ namespace Game {
                     if (key->code == sf::Keyboard::Key::Num1) Graphics::selectMenuOption(menu, 0);
                     if (key->code == sf::Keyboard::Key::Num2) Graphics::selectMenuOption(menu, 1);
                     if (key->code == sf::Keyboard::Key::Enter) Graphics::markChosenMenuOption(menu);
+                    if (key->code == sf::Keyboard::Key::Num3 && state.scene == Scene::MainMenu)
+                        Graphics::selectMenuOption(menu, 2);
                 }
             }
 
@@ -211,6 +213,14 @@ namespace Game {
             else if (chosen == 1) {
                 state.running = false;
             }
+            else if (chosen == 2) {
+                Game::changeScene(state, Scene::GameGuide);
+            }
+        }
+        else if (state.scene == Game::Scene::GameGuide) {
+            state.camera.setCenter({ 960, 540 });
+            state.window.setView(state.camera);
+            Graphics::showGameGuide(state.window);
         }
         else if (state.scene == Game::Scene::PauseMenu) {
             state.camera.setCenter({ 960, 540 });
