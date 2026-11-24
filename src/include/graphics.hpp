@@ -55,14 +55,16 @@ namespace Graphics {
         std::string title;
         std::string option1;
         std::string option2;
+        std::string option3;
         std::string bg_path;
         int selected;
         bool chosen;
         bool bg_loaded;
     };
 
-    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg);
+    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg, std::string o3 = "");
     void showMenu(sf::RenderWindow& window, Menu& menu);
+    void showGameGuide(sf::RenderWindow& window);
     int getChosenMenuOption(Menu& menu);
     void selectMenuOption(Menu& menu, int option);
     void markChosenMenuOption(Menu& menu);

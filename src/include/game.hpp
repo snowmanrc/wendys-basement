@@ -16,7 +16,8 @@ namespace Game {
         PauseMenu,
         Playing,
         Win,
-        Lose
+        Lose,
+        GameGuide
     };
 
     struct State {
