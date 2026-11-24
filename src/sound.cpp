@@ -1,7 +1,12 @@
 #include "include/sound.hpp"
 #include "include/assets.hpp"
 #include <SFML/Audio.hpp>
+#include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <map>
 #include <string>
+#include <vector>
 
 
 namespace Sound {
@@ -25,13 +30,13 @@ namespace Sound {
             case MusicType::Menu:
                 filepath = Assets::faint_signal_music; break;
             case MusicType::Background:
-                filepath = Assets::old_doll_slowed_music; break;
+                filepath = Assets::ambience_music; break;
             case MusicType::Chase:
-                filepath = Assets::old_doll_slowed_music; break;
+                filepath = Assets::old_doll_music; break;
             case MusicType::Win:
                 filepath = Assets::golden_wind_music; break;
             case MusicType::Lose:
-                filepath = Assets::old_doll_slowed_music; break;
+                filepath = Assets::old_doll_music; break;
         }
 
         current_music.stop();
@@ -62,9 +67,32 @@ namespace Sound {
             current_music.stop();
             Sound::current_music_type = MusicType::None;
         }
-
     }
 
+    void playSound(std::string filepath) {
+
+        static std::map<std::string, sf::SoundBuffer> buffers;
+        static std::vector<sf::Sound> sounds;
+
+        while (sounds.size() > 0) {
+            if (sounds[0].getStatus() == sf::Sound::Status::Stopped) {
+                sounds.erase(sounds.begin());
+                continue;
+            }
+            break;
+        }
+
+        auto [iter, inserted] = buffers.try_emplace(filepath);
+        
+        if (inserted && !iter->second.loadFromFile(filepath)) {
+            buffers.erase(iter);
+            return;
+        }
+        
+        auto& sound = sounds.emplace_back(iter->second);
+        sound.setLooping(false);
+        sound.play();
+    }
 }
 
 
