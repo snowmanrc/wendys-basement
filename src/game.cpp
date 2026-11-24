@@ -25,14 +25,14 @@
 
 namespace Game {
 
-    State init() {
+    void init(State& state) {
 
         auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.jpg");
         auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu","assets/bg.jpg");
         auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/bg.jpg");
         auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/bg.jpg");
 
-        State state = {
+        state = {
             sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
             sf::View(),
             sf::Clock(),
@@ -54,8 +54,6 @@ namespace Game {
         Game::changeScene(state, Scene::MainMenu);
 
         DEBUG("GAME: Initialized game state.");
-        
-        return state;
     }
 
 
@@ -271,7 +269,8 @@ namespace Game {
 
     void run() {
 
-        State state = Game::init();
+        State state;
+        Game::init(state);
 
         while (state.running) {
             Game::handleEvents(state);
