@@ -10,6 +10,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <iostream>
 #include <type_traits>
 
 #include "include/game.hpp"
@@ -24,14 +25,14 @@
 
 namespace Game {
 
-    void init(State& state) {
+    State init() {
 
-        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.png");
-        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu","assets/bg.png");
-        auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/bg.png");
-        auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/bg.png");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.jpg");
+        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu","assets/bg.jpg");
+        auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/bg.jpg");
+        auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/bg.jpg");
 
-        state = {
+        State state = {
             sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
             sf::View(),
             sf::Clock(),
@@ -53,6 +54,8 @@ namespace Game {
         Game::changeScene(state, Scene::MainMenu);
 
         DEBUG("GAME: Initialized game state.");
+        
+        return state;
     }
 
 
@@ -65,8 +68,8 @@ namespace Game {
             exit(1);
         }
 
-        state.player = Player::Entity({1200, 880});
-        state.ghost = Ghost::Entity({100, 400});
+        state.player = Player::Entity(Utils::tiledToCartesianVectorCentered(Map::player_spawn_pos, Map::tilesize));
+        state.ghost = Ghost::Entity(Utils::tiledToCartesianVectorCentered(Map::ghost_spawn_pos, Map::tilesize));
 
         Sound::startMusic(0);
         Sound::pauseMusic();
@@ -268,8 +271,7 @@ namespace Game {
 
     void run() {
 
-        State state;
-        Game::init(state);
+        State state = Game::init();
 
         while (state.running) {
             Game::handleEvents(state);
