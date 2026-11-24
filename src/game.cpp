@@ -15,6 +15,7 @@
 
 #include "include/game.hpp"
 #include "include/debug.hpp"
+#include "include/error.hpp"
 #include "include/ghost.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
@@ -59,12 +60,7 @@ namespace Game {
 
     void start(State& state) {
 
-        bool loaded = Map::load("assets/map.png");
-
-        if (!loaded) {
-            DEBUG("GAME: ERROR: Failed to load map, cannot start game!");
-            exit(1);
-        }
+        Map::load("assets/map.png");
 
         state.player = Player::Entity(Utils::tiledToCartesianVectorCentered(Map::player_spawn_pos, Map::tilesize));
         state.ghost = Ghost::Entity(Utils::tiledToCartesianVectorCentered(Map::ghost_spawn_pos, Map::tilesize));

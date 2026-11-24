@@ -1,5 +1,6 @@
 #include "include/map.hpp"
 #include "include/debug.hpp"
+#include "include/error.hpp"
 #include "include/utils.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <iostream>
@@ -25,7 +26,7 @@ namespace Map {
         sf::Image image;
         
         if (!image.loadFromFile(filepath)) {
-            DEBUG("Image could not be loaded!");
+            ERROR("MAP: ERROR: Failed to load map file %s", filepath.data());
             return false;
         }
         //if map is load again then clear the previous data

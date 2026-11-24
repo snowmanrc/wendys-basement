@@ -17,6 +17,7 @@
 
 
 
+#include "include/error.hpp"
 #include "include/ghost.hpp"
 #include "include/map.hpp"
 #include "include/player.hpp"
@@ -36,7 +37,9 @@ namespace Graphics {
         }
 
         sf::Texture texture;
-        bool loaded = texture.loadFromFile(path);
+        if (!texture.loadFromFile(path)) {
+            ERROR("GRAPHICS: ERROR: Failed to load asset %s", path.data());
+        }
         // failure here
         Graphics::textures[path] = texture;
         return Graphics::textures[path];
