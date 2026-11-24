@@ -60,7 +60,7 @@ namespace Game {
 
     void start(State& state) {
 
-        Map::load("assets/map.png");
+        Map::load(Graphics::Assets::map_file);
 
         state.player = Player::Entity(Utils::tiledToCartesianVectorCentered(Map::player_spawn_pos, Map::tilesize));
         state.ghost = Ghost::Entity(Utils::tiledToCartesianVectorCentered(Map::ghost_spawn_pos, Map::tilesize));
@@ -186,7 +186,7 @@ namespace Game {
             Graphics::drawProps(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
-            //Graphics::drawOverlay(state.window, state.camera, state.player);
+            Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Crosses Left"};
             int values[] = {

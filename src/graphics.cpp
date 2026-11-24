@@ -45,16 +45,17 @@ namespace Graphics {
         return Graphics::textures[path];
     }
 
+
     void drawMap(sf::RenderWindow& window) {
 
-        auto texture = Graphics::getTexture("assets/wall.png");
+        auto texture = Graphics::getTexture(Assets::wall_sprite);
         auto wall = sf::Sprite(texture);
         wall.setScale({
             Map::tilesize / static_cast<float>(texture.getSize().x),
             Map::tilesize / static_cast<float>(texture.getSize().y)
         });
 
-        auto texture2 = Graphics::getTexture("assets/floor.png");
+        auto texture2 = Graphics::getTexture(Assets::floor_sprite);
         auto floor = sf::Sprite(texture2);
         floor.setScale({
             Map::tilesize / static_cast<float>(texture2.getSize().x),
@@ -85,7 +86,7 @@ namespace Graphics {
 
         if (player.hidden) return;
 
-        auto texture = Graphics::getTexture("assets/player.png");
+        auto texture = Graphics::getTexture(Assets::player_sprite);
         auto sprite = sf::Sprite(texture);
         sprite.setScale({
             player.size / static_cast<float>(texture.getSize().x) * 2.5f,
@@ -97,7 +98,7 @@ namespace Graphics {
 
 
     void drawGhost(sf::RenderWindow& window, Ghost::Entity& ghost) {
-        auto texture = Graphics::getTexture("assets/ghost.png");
+        auto texture = Graphics::getTexture(Assets::ghost_sprite);
         auto sprite = sf::Sprite(texture);
         sprite.setScale({
             ghost.size / static_cast<float>(texture.getSize().x) * 3.5f,
@@ -111,7 +112,7 @@ namespace Graphics {
     void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player) {
 
         static sf::Texture texture;
-        static bool loaded = texture.loadFromFile("assets/overlay.png");
+        static bool loaded = texture.loadFromFile(Assets::overlay_image);
 
         if (!loaded) {
             DEBUG("GRAPHICS: WARNING: overlay file not found!");
@@ -140,7 +141,7 @@ namespace Graphics {
 
         if (!font_loaded)
         {
-            if (!font.openFromFile("assets/silkscreen-regular.ttf"))
+            if (!font.openFromFile(Assets::silkscreen_regular_font))
             {
                 DEBUG("Failed to load HUD font");
 
@@ -181,7 +182,7 @@ namespace Graphics {
 
         for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
             auto tile = Map::cross_slots[i];
-            auto texture = Graphics::getTexture("assets/cross.png");
+            auto texture = Graphics::getTexture(Assets::cross_sprite);
             sf::Sprite sprite(texture);
             sprite.setScale({3.5,3.5});
             sprite.setPosition(Utils::tiledToCartesianVector(tile, Map::tilesize));
@@ -190,7 +191,7 @@ namespace Graphics {
 
         for (unsigned int i = 0; i < Map::crate_slots.size(); i++) {
             auto tile = Map::crate_slots[i];
-            auto texture = Graphics::getTexture("assets/crate.png");
+            auto texture = Graphics::getTexture(Assets::crate_sprite);
             sf::Sprite sprite(texture);
             sprite.setScale(
                 {
@@ -234,7 +235,7 @@ namespace Graphics {
         static bool font_loaded = false;
 
         if (!font_loaded) {
-            if (!font.openFromFile("assets/silkscreen-regular.ttf")) {
+            if (!font.openFromFile(Assets::silkscreen_regular_font)) {
                 DEBUG("Failed to load font");
                 exit(1);
             }   
