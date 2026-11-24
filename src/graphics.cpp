@@ -204,7 +204,8 @@ namespace Graphics {
         }
     }
 
-    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg, std::string o3 ) {
+    
+    Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg, std::string o3) {
 
         sf::Texture texture; 
         bool bg_loaded = texture.loadFromFile(bg);
@@ -352,71 +353,6 @@ namespace Graphics {
         window.draw(text2);
     }
 
-    void showGameGuide(sf::RenderWindow& window) {
-
-        static sf::Font font;
-        static bool font_loaded = false;
-
-        if (!font_loaded) {
-            if (!font.openFromFile("assets/silkscreen-regular.ttf")) {
-                DEBUG("Failed to load Game Guide font");
-                return;
-            }
-            font_loaded = true;
-        }
-
-        auto& texture = Graphics::getTexture("assets/bg.jpg");
-        sf::Sprite background(texture);
-
-        auto view_size = window.getView().getSize();
-        auto image_size = texture.getSize();
-
-        background.setScale({
-            view_size.x / static_cast<float>(image_size.x),
-            view_size.y / static_cast<float>(image_size.y)
-            });
-
-        window.draw(background);
-
-        sf::Text title(font, "HOW TO PLAY", 64);
-        title.setFillColor(sf::Color(160, 0, 24));
-
-        sf::FloatRect title_bounds = title.getLocalBounds();
-        title.setOrigin({
-            title_bounds.position.x + title_bounds.size.x / 2.f,
-            title_bounds.position.y + title_bounds.size.y / 2.f
-            });
-
-        title.setPosition({ 960.f, 250.f });
-
-        sf::Text instructions(font,
-            "Collect all 5 crosses\n"
-            "W - Move Up\n"
-            "A - Move Left\n"
-            "S - Move Down\n"
-            "D - Move Right\n"
-            "E - Hide inside a box",
-            32
-        );
-
-        instructions.setFillColor(sf::Color(214, 208, 194));
-        instructions.setPosition({ 600.f, 400.f });
-
-        sf::Text back_text(font, "Press ESC to return to Main Menu", 24);
-        back_text.setFillColor(sf::Color(214, 208, 194));
-
-        sf::FloatRect back_bounds = back_text.getLocalBounds();
-        back_text.setOrigin({
-            back_bounds.position.x + back_bounds.size.x / 2.f,
-            back_bounds.position.y + back_bounds.size.y / 2.f
-            });
-
-        back_text.setPosition({ 960.f, 900.f });
-
-        window.draw(title);
-        window.draw(instructions);
-        window.draw(back_text);
-    }
 
     int getChosenMenuOption(Menu& menu) {
         if (menu.chosen) {
@@ -442,4 +378,75 @@ namespace Graphics {
     void markChosenMenuOption(Menu& menu) {
         menu.chosen = true;
     }
+
+
+    bool showGameGuide(sf::RenderWindow& window) {
+
+        static sf::Font font;
+        static bool font_loaded = false;
+
+        if (!font_loaded) {
+            if (!font.openFromFile(Assets::silkscreen_regular_font)) {
+                ERROR("Failed to load Game Guide font");
+            }
+            font_loaded = true;
+        }
+
+        auto& texture = Graphics::getTexture(Assets::menu_bg_image);
+        sf::Sprite background(texture);
+
+        auto view_size = window.getView().getSize();
+        auto image_size = texture.getSize();
+
+        background.setScale({
+            view_size.x / static_cast<float>(image_size.x),
+            view_size.y / static_cast<float>(image_size.y)
+        });
+
+        window.draw(background);
+
+        sf::Text title(font, "HOW TO PLAY", 64);
+        title.setFillColor(sf::Color(160, 0, 24));
+
+        sf::FloatRect title_bounds = title.getLocalBounds();
+        title.setOrigin({
+            title_bounds.position.x + title_bounds.size.x / 2.f,
+            title_bounds.position.y + title_bounds.size.y / 2.f
+        });
+
+        title.setPosition({ 960.f, 250.f });
+
+        sf::Text instructions(font,
+            "Collect all 5 crosses\n"
+            "W - Move Up\n"
+            "A - Move Left\n"
+            "S - Move Down\n"
+            "D - Move Right\n"
+            "E - Hide inside a box",
+            32
+        );
+
+        instructions.setFillColor(sf::Color(214, 208, 194));
+        instructions.setPosition({ 600.f, 400.f });
+
+        sf::Text back_text(font, "Press ESC to return to Main Menu", 24);
+        
+        back_text.setFillColor(sf::Color(214, 208, 194));
+
+        sf::FloatRect back_bounds = back_text.getLocalBounds();
+        back_text.setOrigin({
+            back_bounds.position.x + back_bounds.size.x / 2.f,
+            back_bounds.position.y + back_bounds.size.y / 2.f
+        });
+
+        back_text.setPosition({ 960.f, 900.f });
+
+        window.draw(title);
+        window.draw(instructions);
+        window.draw(back_text);
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) return true;
+        return false;
+    }
+
 }

@@ -18,25 +18,25 @@ namespace Graphics {
 
     namespace Assets {
         // Images & Sprites
-        const char menu_bg_image[] = "assets/bg.jpg";
-        const char overlay_image[] = "assets/overlay.png";
-        const char crate_sprite[] = "assets/crate.png";
-        const char cross_sprite[] = "assets/cross.png";
-        const char floor_sprite[] = "assets/floor.png";
-        const char ghost_sprite[] = "assets/ghost.png";
-        const char player_sprite[] = "assets/player.png";
-        const char wall_sprite[] = "assets/wall.png";
+        const std::string menu_bg_image = "assets/bg.jpg";
+        const std::string overlay_image = "assets/overlay.png";
+        const std::string crate_sprite = "assets/crate.png";
+        const std::string cross_sprite = "assets/cross.png";
+        const std::string floor_sprite = "assets/floor.png";
+        const std::string ghost_sprite = "assets/ghost.png";
+        const std::string player_sprite = "assets/player.png";
+        const std::string wall_sprite = "assets/wall.png";
     
         // Map Data
-        const char map_file[] = "assets/map.png";
+        const std::string map_file = "assets/map.png";
     
         // Audio
-        const char faint_signal_music[] = "assets/faint-signal.mp3";
-        const char golden_wind_music[] = "assets/golden-wind.mp3";
-        const char old_doll_slowed_music[] = "assets/old_doll_slowed.mp3";
+        const std::string faint_signal_music = "assets/faint-signal.mp3";
+        const std::string golden_wind_music = "assets/golden-wind.mp3";
+        const std::string old_doll_slowed_music = "assets/old_doll_slowed.mp3";
     
         // Fonts
-        const char silkscreen_regular_font[] = "assets/silkscreen-regular.ttf";
+        const std::string silkscreen_regular_font = "assets/silkscreen-regular.ttf";
     }
 
     void drawMap(sf::RenderWindow& window);
@@ -64,8 +64,9 @@ namespace Graphics {
 
     Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg, std::string o3 = "");
     void showMenu(sf::RenderWindow& window, Menu& menu);
-    void showGameGuide(sf::RenderWindow& window);
     int getChosenMenuOption(Menu& menu);
     void selectMenuOption(Menu& menu, int option);
     void markChosenMenuOption(Menu& menu);
+
+    bool showGameGuide(sf::RenderWindow& window);
 }

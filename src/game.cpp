@@ -220,7 +220,8 @@ namespace Game {
         else if (state.scene == Game::Scene::GameGuide) {
             state.camera.setCenter({ 960, 540 });
             state.window.setView(state.camera);
-            Graphics::showGameGuide(state.window);
+            bool closed = Graphics::showGameGuide(state.window);
+            if (closed) Game::changeScene(state, Scene::MainMenu);
         }
         else if (state.scene == Game::Scene::PauseMenu) {
             state.camera.setCenter({ 960, 540 });
