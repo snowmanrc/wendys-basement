@@ -54,13 +54,18 @@ namespace Ghost {
 
 
     bool hasCollided(Entity& ghost) {
-        
 		float cr = ghost.shape.getRadius();
 		float cx = ghost.position.x + cr;
 		float cy = ghost.position.y + cr;
 
-		for (int i = 0; i < Map::height; i++) {
-			for (int j = 0; j < Map::width; j++) {
+        auto ghost_tile = Utils::cartesianToTiledVector(ghost.position + sf::Vector2f(ghost.size, ghost.size), Map::tilesize);
+		int lower_x = std::max(0, ghost_tile.x - 3);
+		int lower_y = std::max(0, ghost_tile.y - 3);
+		int upper_x = std::min(Map::width, ghost_tile.x + 3);
+		int upper_y = std::min(Map::height, ghost_tile.y + 3);
+
+		for (int i = lower_y; i < upper_y; i++) {
+			for (int j = lower_x; j < upper_x; j++) {
 
 				auto tile = Map::grid[i][j];
 				

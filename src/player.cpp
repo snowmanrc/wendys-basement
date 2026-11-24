@@ -85,8 +85,14 @@ namespace Player {
 		float cx = player.position.x + cr;
 		float cy = player.position.y + cr;
 
-		for (int i = 0; i < Map::height; i++) {
-			for (int j = 0; j < Map::width; j++) {
+		auto player_tile = Utils::cartesianToTiledVector(player.position + sf::Vector2f(player.size, player.size), Map::tilesize);
+		int lower_x = std::max(0, player_tile.x - 3);
+		int lower_y = std::max(0, player_tile.y - 3);
+		int upper_x = std::min(Map::width, player_tile.x + 3);
+		int upper_y = std::min(Map::height, player_tile.y + 3);
+
+		for (int i = lower_y; i < upper_y; i++) {
+			for (int j = lower_x; j < upper_x; j++) {
 
 				auto tile = Map::grid[i][j];
 				
