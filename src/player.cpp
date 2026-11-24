@@ -15,12 +15,13 @@ namespace Player {
 
 		bool shift_pressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift);
 		
+		player.speed = Player::WALKING_SPEED;
 
 		if (!shift_pressed && player.stamina < Player::MAX_STAMINA) {
-			player.speed = Player::WALKING_SPEED;
 			player.stamina += 1;
+			DEBUG("PLAYER: player is walking right now. Stamina: %d", player.stamina);
 		}
-
+		
 		if (player.hidden) return;
 
 		sf::Vector2f direction{0,0};
@@ -39,9 +40,11 @@ namespace Player {
 		if (direction.x == 0 && direction.y == 0) return;
 
 		if (shift_pressed && player.stamina > 0) {
+			DEBUG("PLAYER: player is sprinting right now. Stamina: %d", player.stamina);
 			player.speed = Player::RUNNING_SPEED;
 			player.stamina -= 1;
 		}
+
 
 		/* 
 		because both have magnitude, the movement will be along the hypotenuse right?
@@ -66,13 +69,13 @@ namespace Player {
 			player.position.y = old_pos.y;
 		}
 
-		DEBUG(
-			"PLAYER: Position: Coordinate(%f, %f) Tiled(%i, %i)", 
-			player.position.x, 
-			player.position.y,
-			(int)(player.position.x / Map::tilesize),
-			(int)(player.position.y / Map::tilesize)
-		);
+		// DEBUG(
+		// 	"PLAYER: Position: Coordinate(%f, %f) Tiled(%i, %i)", 
+		// 	player.position.x, 
+		// 	player.position.y,
+		// 	(int)(player.position.x / Map::tilesize),
+		// 	(int)(player.position.y / Map::tilesize)
+		// );
 	}
 
 
