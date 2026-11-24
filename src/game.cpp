@@ -89,7 +89,7 @@ namespace Game {
             state.current_menu = &state.main_menu;
         }
         else if (scene == Game::Scene::Win) {
-            Sound::startMusic(1);
+            Sound::startMusic(2);
             state.current_menu = &state.win_menu;
         }
         else if (scene == Game::Scene::Lose) {
@@ -186,7 +186,7 @@ namespace Game {
             Graphics::drawProps(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
-            Graphics::drawOverlay(state.window, state.camera, state.player);
+            //Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Crosses Left"};
             int values[] = {

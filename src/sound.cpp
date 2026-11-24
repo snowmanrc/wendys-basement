@@ -44,7 +44,7 @@ namespace Sound {
             loop = true;
         }
         else if (id == 2) {
-            filepath = "assets/faint-signal.mp3";
+            filepath = "assets/golden-wind.mp3";
             loop = true;
         }
         else if (id == 3) {

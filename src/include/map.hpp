@@ -9,7 +9,7 @@ namespace Map {
     const int width = 100;
     const int height = 100;
     const float tilesize = 64;
-    const int crosscount = 5;
+    const int crosscount = 1;
 
     extern std::vector<sf::Vector2i> cross_slots;
     extern std::vector<sf::Vector2i> crate_slots;
