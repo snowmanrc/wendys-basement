@@ -126,7 +126,7 @@ namespace Ghost {
         float dist = diff.length() - ghost.size - player.size;
         
         // pixels
-        if (dist < 50) {
+        if (dist < 16) {
             DEBUG("GHOST: Player caught!!");
             return true;
         }
