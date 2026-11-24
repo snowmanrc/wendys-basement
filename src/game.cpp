@@ -28,10 +28,10 @@ namespace Game {
 
     void init(State& state) {
 
-        auto main_menu = Graphics::makeMenu("Wendy's Basement", "Play", "Quit", "assets/bg.jpg");
-        auto pause_menu = Graphics::makeMenu("Paused", "Resume", "Main Menu","assets/bg.jpg");
-        auto win_menu = Graphics::makeMenu("You Won!", "Play Again", "Main Menu", "assets/bg.jpg");
-        auto lose_menu = Graphics::makeMenu("Game Over!", "Play Again", "Main Menu", "assets/bg.jpg");
+        auto main_menu = Graphics::makeMenu("Wendy's Basement", "1. Play", "2. Quit", "assets/bg.jpg");
+        auto pause_menu = Graphics::makeMenu("Paused", "1. Resume", "2. Back to Menu","assets/bg.jpg");
+        auto win_menu = Graphics::makeMenu("You Won!", "1. Play Again", "2. Back to Menu", "assets/bg.jpg");
+        auto lose_menu = Graphics::makeMenu("Game Over!", "1. Play Again", "2. Back to Menu", "assets/bg.jpg");
 
         state = {
             sf::RenderWindow(sf::VideoMode({720, 600}), "Wendy's Basement"),
