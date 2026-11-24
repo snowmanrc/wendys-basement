@@ -46,7 +46,7 @@ namespace Graphics {
     }
 
 
-    void drawMap(sf::RenderWindow& window) {
+    void drawMap(sf::RenderWindow& window, sf::Vector2f center) {
 
         auto texture = Graphics::getTexture(Assets::wall_sprite);
         auto wall = sf::Sprite(texture);
@@ -62,8 +62,15 @@ namespace Graphics {
             Map::tilesize / static_cast<float>(texture2.getSize().y)
         });
 
-        for (int i = 0; i < Map::height; i++) {
-            for (int j = 0; j < Map::width; j++) {
+
+        auto tile = Utils::cartesianToTiledVector(center, Map::tilesize);
+        int lower_x = std::max(0, tile.x - 10);
+        int lower_y = std::max(0, tile.y - 10);
+        int upper_x = std::min(Map::width, tile.x + 12);
+        int upper_y = std::min(Map::height, tile.y + 12);
+
+        for (int i = lower_y; i < upper_y; i++) {
+            for (int j = lower_x; j < upper_x; j++) {
 
                 auto tile = Map::grid[i][j];
                 

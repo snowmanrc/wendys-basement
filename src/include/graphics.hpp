@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <map>
 #include<string>
 
@@ -39,7 +40,7 @@ namespace Graphics {
         const std::string silkscreen_regular_font = "assets/silkscreen-regular.ttf";
     }
 
-    void drawMap(sf::RenderWindow& window);
+    void drawMap(sf::RenderWindow& window, sf::Vector2f center);
 
     void drawPlayer(sf::RenderWindow& window, Player::Entity& player);
 

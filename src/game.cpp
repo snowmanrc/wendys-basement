@@ -184,7 +184,7 @@ namespace Game {
             state.camera.setCenter(state.player.position + sf::Vector2f(state.player.size, state.player.size));
             state.window.setView(state.camera);
 
-            Graphics::drawMap(state.window);
+            Graphics::drawMap(state.window, state.player.position);
             Graphics::drawProps(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
