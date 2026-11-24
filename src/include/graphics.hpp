@@ -48,7 +48,7 @@ namespace Graphics {
 
     void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player);
 
-    void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count);
+    void drawHUD(sf::RenderWindow& window, std::string texts[], std::string values[], int count);
 
     void drawProps(sf::RenderWindow& window);
 

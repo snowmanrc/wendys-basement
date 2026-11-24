@@ -11,6 +11,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
+#include <string>
 #include <type_traits>
 
 #include "include/game.hpp"
@@ -190,10 +191,11 @@ namespace Game {
             Graphics::drawPlayer(state.window, state.player);
             //Graphics::drawOverlay(state.window, state.camera, state.player);
 
-            std::string texts[] = {"Stamina", "Crosses Left"};
-            int values[] = {
-                static_cast<int>(state.player.stamina / (float) Player::MAX_STAMINA * 100),
-                Map::crosscount - static_cast<int>(state.player.crosses_found)
+            std::string texts[] = {"Stamina", "Crosses Left", "Nearest Cross"};
+            std::string values[] = {
+                std::to_string((int)(state.player.stamina / (float) Player::MAX_STAMINA * 100)),
+               std::to_string(Map::crosscount - static_cast<int>(state.player.crosses_found)),
+                std::to_string(Player::findNearestCrossDistance(state.player)) + "m",
             };
             int count = sizeof(values)/sizeof(values[0]);
 

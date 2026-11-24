@@ -141,7 +141,7 @@ namespace Graphics {
         window.draw(sprite, states);  
     }
 
-    void drawHUD(sf::RenderWindow& window, std::string texts[], int values[], int count) 
+    void drawHUD(sf::RenderWindow& window, std::string texts[], std::string values[], int count) 
     {
 		static sf::Font font;
 		static bool font_loaded = false;
@@ -150,7 +150,7 @@ namespace Graphics {
         {
             if (!font.openFromFile(Assets::silkscreen_regular_font))
             {
-                DEBUG("Failed to load HUD font");
+                ERROR("Failed to load HUD font");
 
                 return;
             }
@@ -170,9 +170,9 @@ namespace Graphics {
         for (int i = 0; i < count; i++)
         {
             std::string text = texts[i];
-            int num = values[i];
+            std::string val = values[i];
 
-            sf::Text hudText(font, text + ": " + std::to_string(num), 32);
+            sf::Text hudText(font, text + ": " + val, 28);
             hudText.setFillColor(sf::Color(214, 208, 194));
 
             // setting the position  ogf the text with each next line 45 pixel lower

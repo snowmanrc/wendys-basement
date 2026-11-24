@@ -30,4 +30,5 @@ namespace Player {
     void tryHiding(Entity& player);
     void tryCollectingCross(Entity& player);
     bool hasWon(Entity& player);
+    int findNearestCrossDistance(Entity& player);
 }

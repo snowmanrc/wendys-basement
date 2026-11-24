@@ -1,4 +1,5 @@
 #include <SFML/System/Vector2.hpp>
+#include <cstdint>
 #include <iostream>
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
@@ -145,10 +146,12 @@ namespace Player {
 
 
 
-
 	void tryCollectingCross(Entity& player) {
 
-		auto player_tile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
+		auto player_tile = Utils::cartesianToTiledVector(
+			player.position + sf::Vector2f(player.size, player.size), 
+			Map::tilesize
+		);
 
 		for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
 			auto cross_tile = Map::cross_slots[i];
@@ -164,5 +167,26 @@ namespace Player {
 
 	bool hasWon(Entity& player) {
 		return player.crosses_found == Map::crosscount;
+	}
+
+	int findNearestCrossDistance(Entity& player) {
+
+		auto player_tile = Utils::cartesianToTiledVector(
+			player.position + sf::Vector2f(player.size, player.size), 
+			Map::tilesize
+		);
+
+		int min_dist = INT32_MAX;
+
+		for (unsigned int i = 0; i < Map::cross_slots.size(); i++) {
+			auto cross_tile = Map::cross_slots[i];
+			int dist = (cross_tile - player_tile).lengthSquared();
+
+			if (dist < min_dist) {
+				min_dist = dist;
+			}
+		}
+
+		return min_dist;
 	}
 }
