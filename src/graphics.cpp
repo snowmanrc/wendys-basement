@@ -107,7 +107,7 @@ namespace Graphics {
     void drawOverlay(sf::RenderWindow& window, sf::View& camera, Player::Entity& player) {
 
         static sf::Texture texture;
-        static bool loaded = texture.loadFromFile("assets/overlay.png");
+        static bool loaded = texture.loadFromFile("assets/overlay.jpg");
 
         if (!loaded) {
             DEBUG("GRAPHICS: WARNING: overlay file not found!");

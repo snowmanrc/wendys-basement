@@ -36,7 +36,7 @@ namespace Game {
     };
 
     // Initializes the Game and setups the window
-    State init();
+    void init(State& state);
 
     // Closes the game
     void close(State& state);
