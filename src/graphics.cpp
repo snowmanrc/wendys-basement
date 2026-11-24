@@ -204,7 +204,7 @@ namespace Graphics {
         }
     }
 
-    
+
     Menu makeMenu(std::string t, std::string o1, std::string o2, std::string bg, std::string o3) {
 
         sf::Texture texture; 
@@ -417,12 +417,16 @@ namespace Graphics {
         title.setPosition({ 960.f, 250.f });
 
         sf::Text instructions(font,
-            "Collect all 5 crosses\n"
-            "W - Move Up\n"
-            "A - Move Left\n"
-            "S - Move Down\n"
-            "D - Move Right\n"
-            "E - Hide inside a box",
+            "You're trapped in Wendy's Basement!\n"
+            "To escape, you must collect all 5 crosses! \n"
+            "Be ware of Wendy, she is searching for you! \n"
+            "+ W or Arrow Up - To Move Up\n"
+            "+ A or Arrow Left - To Move Left\n"
+            "+ S or Arrow Down - To Move Down\n"
+            "+ D or Arrow Right - To Move Right\n"
+            "+ Shift - To run so Wendy can't catch you!\n"
+            "+ E - To hide inside a crate, \n"
+            "so Wendy doesn't spot you!",
             32
         );
 
