@@ -22,7 +22,6 @@ namespace Player {
 
 		if (!shift_pressed && player.stamina < Player::MAX_STAMINA) {
 			player.stamina += 1;
-			DEBUG("PLAYER: player is walking right now. Stamina: %d", player.stamina);
 		}
 		
 		if (player.hidden) return;
@@ -43,7 +42,6 @@ namespace Player {
 		if (direction.x == 0 && direction.y == 0) return;
 
 		if (shift_pressed && player.stamina > 0) {
-			DEBUG("PLAYER: player is sprinting right now. Stamina: %d", player.stamina);
 			player.speed = Player::RUNNING_SPEED;
 			player.stamina -= 1;
 		}

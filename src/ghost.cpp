@@ -97,6 +97,7 @@ namespace Ghost {
             DEBUG("GHOST: wandering");
             ghost.mode = WalkingMode::Wandering;
             Sound::startMusic(Sound::MusicType::Background);
+            ghost.path.erase(ghost.path.begin());
         } 
         else if (should_chase && ghost.mode != WalkingMode::Chasing) {
             DEBUG("GHOST: chasing");
@@ -108,7 +109,6 @@ namespace Ghost {
         DEBUG("GHOST: Player Distance: %f", dist);
         
         if (ghost.mode == WalkingMode::Chasing) {
-            
             sf::Vector2i player_tile = Utils::cartesianToTiledVector(player.position, Map::tilesize);
             Ghost::follow(ghost, player_tile); 
         }

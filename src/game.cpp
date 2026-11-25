@@ -145,6 +145,10 @@ namespace Game {
                 if (key->code == sf::Keyboard::Key::I) {
                     state.player.crosses_found++;
                 }
+
+                if (key->code == sf::Keyboard::Key::O) {
+                    Ghost::follow(state.ghost, Utils::cartesianToTiledVector(state.player.position, Map::tilesize));
+                }
             }
         }
     }
@@ -194,7 +198,7 @@ namespace Game {
             Graphics::drawProps(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
-            Graphics::drawOverlay(state.window, state.camera, state.player);
+            //Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Crosses Left", "Nearest Cross"};
             std::string values[] = {
