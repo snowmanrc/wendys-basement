@@ -28,6 +28,12 @@ namespace Ghost {
             ghost.path.pop_back();
             return;
         }
+
+        if (ghost.mode == WalkingMode::Wandering) {
+            ghost.speed = Ghost::WALKING_SPEED;
+        } else {
+            ghost.speed = Ghost::RUNNING_SPEED;
+        }
         
         auto dir_vec = target_tile - ghost_tile;
         sf::Vector2f dir_vecf = {(float)dir_vec.x, (float)dir_vec.y}; 
@@ -91,7 +97,7 @@ namespace Ghost {
         float dist = (player.position - ghost.position).length();
 
         bool should_wander = (player.hidden && dist > 50) || dist > 5000;
-        bool should_chase = !player.hidden && dist < 1000;
+        bool should_chase = !player.hidden && dist < 1200;
 
         if (should_wander && ghost.mode != WalkingMode::Wandering) {
             DEBUG("GHOST: wandering");
