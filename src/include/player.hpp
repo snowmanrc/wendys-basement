@@ -5,7 +5,7 @@
 
 namespace Player {
 
-    const float WALKING_SPEED = 600;
+    const float WALKING_SPEED = 500;
     const float RUNNING_SPEED = 900;
 
     const float SIZE = 24;
