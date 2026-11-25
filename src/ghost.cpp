@@ -42,14 +42,7 @@ namespace Ghost {
         auto old_pos = ghost.position;
 
 		ghost.position.x += normalized_vec.x * ghost.speed * dt;
-		if (hasCollided(ghost)) {
-			ghost.position.x = old_pos.x;
-		}
-
 		ghost.position.y += normalized_vec.y * ghost.speed * dt;
-		if (hasCollided(ghost)) {
-			ghost.position.y = old_pos.y;
-		}
 
         // DEBUG(
 		// 	"GHOST: Position: Coordinate(%f, %f) Tiled(%i, %i)", 
@@ -58,38 +51,6 @@ namespace Ghost {
 		// 	(int)(ghost.position.x / Map::tilesize),
 		// 	(int)(ghost.position.y / Map::tilesize)
 		// );
-    }
-
-
-    bool hasCollided(Entity& ghost) {
-		float cr = ghost.shape.getRadius();
-		float cx = ghost.position.x + cr;
-		float cy = ghost.position.y + cr;
-
-        auto ghost_tile = Utils::cartesianToTiledVector(ghost.position + sf::Vector2f(ghost.size, ghost.size), Map::tilesize);
-		int lower_x = std::max(0, ghost_tile.x - 3);
-		int lower_y = std::max(0, ghost_tile.y - 3);
-		int upper_x = std::min(Map::width, ghost_tile.x + 3);
-		int upper_y = std::min(Map::height, ghost_tile.y + 3);
-
-		for (int i = lower_y; i < upper_y; i++) {
-			for (int j = lower_x; j < upper_x; j++) {
-
-				auto tile = Map::grid[i][j];
-				
-				if (tile == 0) continue;
-
-				float rx = j * Map::tilesize;
-				float ry = i * Map::tilesize;
-				int rw = Map::tilesize, rh = Map::tilesize;
-				
-				bool collided = Utils::detectCircleRectCollision(cr, cx, cy, rx, ry, rw, rh);
-
-				if (collided) return true;
-			}
-		}
-
-		return false;
     }
 
     void decideTarget(Entity& ghost, Player::Entity& player) {

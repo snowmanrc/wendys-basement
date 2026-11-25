@@ -11,7 +11,7 @@
 namespace Ghost {
 
     const float WALKING_SPEED = 500;
-    const float RUNNING_SPEED = 850;
+    const float RUNNING_SPEED = 800;
 
     const float SIZE = 26;
 
