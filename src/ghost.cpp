@@ -106,8 +106,7 @@ namespace Ghost {
         float dist = diff.length() - ghost.size - player.size;
         
         // pixels
-        if (dist < 32) {
-            Sound::playSound(Assets::terror_sound);
+        if (dist < 28) {
             DEBUG("GHOST: Player caught!!");
             return true;
         }

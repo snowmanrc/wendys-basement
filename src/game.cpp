@@ -96,6 +96,7 @@ namespace Game {
         }
         else if (scene == Game::Scene::Lose) {
             Sound::startMusic(Sound::MusicType::Lose);
+            Sound::playSound(Assets::terror_sound);
             state.current_menu = &state.lose_menu;
         }
     }
