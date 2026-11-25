@@ -288,14 +288,14 @@ namespace Graphics {
         button1.setFillColor(sf::Color(0,0,0));
         button1.setPosition({ 710.f, 480.f });
         button1.setOutlineThickness(6.f);
-        button1.setOutlineColor(menu.selected == 0 ? sf::Color(214, 208, 194): sf::Color(160, 0, 24));
+        button1.setOutlineColor(menu.selected == 0 ? sf::Color(214, 208, 194): sf::Color(64,62,58));
     
         // creating second button same like first just changing vertical position of button
         sf::RectangleShape button2({ 500.f, 60.f });
         button2.setFillColor(sf::Color(0,0,0));
         button2.setPosition({ 710.f, 580.f });
         button2.setOutlineThickness(6.f);
-        button2.setOutlineColor(menu.selected == 1 ? sf::Color(214, 208, 194): sf::Color(160, 0, 24));
+        button2.setOutlineColor(menu.selected == 1 ? sf::Color(214, 208, 194): sf::Color(64,62,58));
 
         //creating third button for game guide just for main menu
         if (menu.option3 != "") {
@@ -303,7 +303,7 @@ namespace Graphics {
             button3.setFillColor(sf::Color(0, 0, 0));
             button3.setPosition({ 710.f, 680.f });
             button3.setOutlineThickness(6.f);
-            button3.setOutlineColor(menu.selected == 2 ? sf::Color(214, 208, 194) : sf::Color(160, 0, 24));
+            button3.setOutlineColor(menu.selected == 2 ? sf::Color(214, 208, 194) : sf::Color(64,62,58));
 
             sf::Text text3(font, menu.option3, 32);
             text3.setFillColor(sf::Color(214, 208, 194));
@@ -428,7 +428,7 @@ namespace Graphics {
             "You're trapped in Wendy's Basement!\n"
             "To escape, you must collect all 5 crosses! \n"
             "Be ware of Wendy, she is searching for you! \n"
-            "Once you hear terror, run.\n"
+            "Once you hear the church bell ring, run.\n"
             "Controls: \n"
             "W or Arrow Up - To Move Up\n"
             "A or Arrow Left - To Move Left\n"

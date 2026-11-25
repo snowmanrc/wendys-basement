@@ -146,6 +146,7 @@ namespace Ghost {
         
         // pixels
         if (dist < 32) {
+            Sound::playSound(Assets::terror_sound);
             DEBUG("GHOST: Player caught!!");
             return true;
         }

@@ -36,7 +36,7 @@ namespace Sound {
             case MusicType::Win:
                 filepath = Assets::golden_wind_music; break;
             case MusicType::Lose:
-                filepath = Assets::old_doll_music; break;
+                filepath = Assets::old_doll_slowed_music; break;
         }
 
         current_music.stop();
