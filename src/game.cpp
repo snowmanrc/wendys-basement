@@ -141,6 +141,10 @@ namespace Game {
                 if (key->code == sf::Keyboard::Key::E) {
                     Player::tryHiding(state.player);
                 }
+
+                if (key->code == sf::Keyboard::Key::I) {
+                    state.player.crosses_found++;
+                }
             }
         }
     }

@@ -161,6 +161,7 @@ namespace Player {
 			auto cross_tile = Map::cross_slots[i];
 			if ((cross_tile - player_tile).lengthSquared() > 2) continue;
 				
+			Sound::playSound(Assets::church_melody_sound);
 			Map::cross_slots.erase(Map::cross_slots.begin() + i);
 			player.crosses_found++;
 			DEBUG("PLAYER: Cross at Tiled(%d, %d) found. Key count: %d", cross_tile.x, cross_tile.y, player.crosses_found);
