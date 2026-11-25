@@ -428,18 +428,20 @@ namespace Graphics {
             "You're trapped in Wendy's Basement!\n"
             "To escape, you must collect all 5 crosses! \n"
             "Be ware of Wendy, she is searching for you! \n"
-            "+ W or Arrow Up - To Move Up\n"
-            "+ A or Arrow Left - To Move Left\n"
-            "+ S or Arrow Down - To Move Down\n"
-            "+ D or Arrow Right - To Move Right\n"
-            "+ Shift - To run so Wendy can't catch you!\n"
-            "+ E - To hide inside a crate, \n"
+            "Once you hear terror, run.\n"
+            "Controls: \n"
+            "W or Arrow Up - To Move Up\n"
+            "A or Arrow Left - To Move Left\n"
+            "S or Arrow Down - To Move Down\n"
+            "D or Arrow Right - To Move Right\n"
+            "Shift - To run so Wendy can't catch you!\n"
+            "E - To hide inside a crate, \n"
             "so Wendy doesn't spot you!",
             32
         );
 
         instructions.setFillColor(sf::Color(214, 208, 194));
-        instructions.setPosition({ 600.f, 400.f });
+        instructions.setPosition({ 550.f, 400.f });
 
         sf::Text back_text(font, "Press ESC to return to Main Menu", 24);
         
@@ -451,7 +453,7 @@ namespace Graphics {
             back_bounds.position.y + back_bounds.size.y / 2.f
         });
 
-        back_text.setPosition({ 960.f, 900.f });
+        back_text.setPosition({ 960.f, 960.f });
 
         window.draw(title);
         window.draw(instructions);

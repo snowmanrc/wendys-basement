@@ -194,7 +194,7 @@ namespace Game {
             Graphics::drawProps(state.window);
             Graphics::drawGhost(state.window, state.ghost);
             Graphics::drawPlayer(state.window, state.player);
-            //Graphics::drawOverlay(state.window, state.camera, state.player);
+            Graphics::drawOverlay(state.window, state.camera, state.player);
 
             std::string texts[] = {"Stamina", "Crosses Left", "Nearest Cross"};
             std::string values[] = {
