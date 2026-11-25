@@ -108,7 +108,7 @@ namespace Ghost {
         else if (should_chase && ghost.mode != WalkingMode::Chasing) {
             DEBUG("GHOST: chasing");
             ghost.mode = WalkingMode::Chasing;
-            Sound::playSound(Assets::terror_sound);
+            Sound::playSound(Assets::church_melody_sound);
             Sound::startMusic(Sound::MusicType::Chase);
         }
 
